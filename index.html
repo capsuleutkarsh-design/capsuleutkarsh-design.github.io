@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Utkarsh Tripathi – VFX artist &amp; tool maker</title>
+<meta name="description" content="Utkarsh Tripathi, VFX artist in Mumbai. Free tools for VFX and animation studios: Quillo (studio messenger), Slate (pipeline and office app), Contour VFX (AI roto) and Automated Tracker (2D/3D tracking).">
+<meta name="author" content="Utkarsh Tripathi">
+<link rel="canonical" href="https://capsuleutkarsh-design.github.io/">
+<link rel="icon" type="image/svg+xml" href="assets/logo.svg">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Utkarsh Tripathi – VFX artist & tool maker">
+<meta property="og:description" content="Free tools for VFX and animation studios: Quillo, Slate, Contour VFX and Automated Tracker.">
+<meta property="og:url" content="https://capsuleutkarsh-design.github.io/">
+<meta property="og:image" content="https://capsuleutkarsh-design.github.io/assets/share.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b1433">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Utkarsh Tripathi",
+  "jobTitle": "VFX Artist",
+  "email": "mailto:capsuleutkarsh@gmail.com",
+  "address": {"@type": "PostalAddress", "addressLocality": "Mumbai", "addressCountry": "IN"},
+  "url": "https://capsuleutkarsh-design.github.io/",
+  "image": "https://capsuleutkarsh-design.github.io/assets/logo.png",
+  "sameAs": ["https://github.com/capsuleutkarsh-design"],
+  "knowsAbout": ["Visual effects", "Compositing", "Nuke", "Rotoscoping", "Camera tracking", "VFX pipeline"]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b1433; --bg2: #081030; --panel: #101b40; --surface: #17244f; --line: #22326a;
+    --text: #eef2fb; --muted: #9ea9c8; --faint: #67739a; --teal: #3cc8b4; --teal-soft: rgba(60,200,180,.14);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg2); color: var(--text); font: 16px/1.6 Inter, "Segoe UI", system-ui, sans-serif; }
+  a { color: var(--teal); text-decoration: none; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+  /* top bar */
+  nav { position: sticky; top: 0; z-index: 5; background: rgba(8,16,48,.82); backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255,255,255,.05); }
+  nav .wrap { display: flex; align-items: center; gap: 12px; height: 62px; }
+  nav img { width: 34px; height: 34px; border-radius: 10px; }
+  nav b { font-size: 15px; }
+  nav .links { margin-left: auto; display: flex; gap: 22px; font-size: 14px; }
+  nav .links a { color: var(--muted); }
+  nav .links a:hover { color: var(--text); }
+
+  /* hero */
+  header { background: radial-gradient(1200px 500px at 70% -10%, rgba(60,200,180,.18), transparent 60%),
+                       linear-gradient(180deg, var(--bg), var(--bg2)); padding: 84px 0 70px; }
+  .hero { display: grid; grid-template-columns: 1.4fr 1fr; gap: 48px; align-items: center; }
+  .kicker { color: var(--teal); font-weight: 700; letter-spacing: .12em; font-size: 13px; text-transform: uppercase; }
+  h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.05; margin: 12px 0 18px; letter-spacing: -.02em; }
+  .lead { font-size: 19px; color: var(--muted); max-width: 560px; margin: 0 0 30px; }
+  .buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px; font-weight: 600;
+         font-size: 15px; border: 1px solid var(--line); color: var(--text); background: var(--surface); }
+  .btn:hover { border-color: var(--teal); }
+  .btn.primary { background: var(--teal); color: #07122e; border-color: var(--teal); }
+  .btn.primary:hover { filter: brightness(1.07); }
+  .mark { justify-self: center; width: min(320px, 70vw); aspect-ratio: 1; border-radius: 50%;
+          box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 0 0 10px rgba(60,200,180,.07); }
+
+  /* sections */
+  section { padding: 76px 0; }
+  h2 { font-size: 32px; margin: 0 0 8px; letter-spacing: -.01em; }
+  .sub { color: var(--muted); margin: 0 0 36px; }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .card { background: var(--panel); border: 1px solid rgba(255,255,255,.05); border-radius: 22px; overflow: hidden;
+          display: flex; flex-direction: column; transition: transform .2s, border-color .2s; }
+  .card:hover { transform: translateY(-3px); border-color: rgba(60,200,180,.35); }
+  .shot { aspect-ratio: 16/9.6; background: var(--bg2); overflow: hidden; border-bottom: 1px solid rgba(255,255,255,.05); }
+  .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; display: block; }
+  .body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+  .body h3 { margin: 0 0 4px; font-size: 22px; }
+  .tagline { color: var(--teal); font-weight: 600; font-size: 14px; margin: 0 0 10px; }
+  .body p { color: var(--muted); margin: 0 0 16px; font-size: 15px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .tags span { font-size: 12px; font-weight: 600; color: var(--muted); background: var(--surface); border-radius: 8px;
+               padding: 3px 9px; }
+  .actions { margin-top: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+  .actions .btn { padding: 9px 16px; font-size: 14px; }
+
+  .about { display: grid; grid-template-columns: 1.3fr 1fr; gap: 40px; align-items: start; }
+  .about p { color: var(--muted); font-size: 17px; margin: 0 0 14px; }
+  .skills { background: var(--panel); border-radius: 22px; padding: 24px; border: 1px solid rgba(255,255,255,.05); }
+  .skills h3 { margin: 0 0 14px; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); }
+  .skills ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+  .skills li { display: flex; gap: 10px; align-items: baseline; }
+  .skills li b { min-width: 118px; }
+  .skills li span { color: var(--muted); font-size: 15px; }
+
+  .licence { background: var(--teal-soft); border: 1px solid rgba(60,200,180,.25); border-radius: 18px; padding: 20px 24px;
+             color: var(--text); }
+  .licence p { margin: 0; color: var(--muted); }
+  .licence b { color: var(--text); }
+
+  .contact { text-align: center; }
+  .contact .btn { margin-top: 8px; }
+  footer { border-top: 1px solid rgba(255,255,255,.06); padding: 26px 0; color: var(--faint); font-size: 14px; }
+  footer .wrap { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+  @media (max-width: 860px) {
+    .hero, .about { grid-template-columns: 1fr; }
+    .mark { order: -1; width: 180px; }
+    .grid { grid-template-columns: 1fr; }
+    nav .links { display: none; }
+    header { padding: 48px 0 44px; }
+    section { padding: 56px 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <img src="assets/logo.svg" alt="">
+    <b>Utkarsh Tripathi</b>
+    <div class="links">
+      <a href="#tools">Tools</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="https://github.com/capsuleutkarsh-design">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">VFX artist · Mumbai</div>
+      <h1>Utkarsh Tripathi</h1>
+      <p class="lead">I work in visual effects, and I build free tools for VFX and animation studios - chat, pipeline,
+        AI roto and tracking, made by someone who uses them every day.</p>
+      <div class="buttons">
+        <a class="btn primary" href="#tools">See my tools</a>
+        <a class="btn" href="mailto:capsuleutkarsh@gmail.com">✉ capsuleutkarsh@gmail.com</a>
+        <a class="btn" href="https://github.com/capsuleutkarsh-design">GitHub</a>
+      </div>
+    </div>
+    <img class="mark" src="assets/logo.svg" alt="UT logo">
+  </div>
+</header>
+
+<section id="tools">
+  <div class="wrap">
+    <h2>My tools</h2>
+    <p class="sub">All four are free for studios, run on Windows, and come with a one-click installer.</p>
+    <div class="grid">
+
+      <article class="card">
+        <a class="shot" href="https://github.com/capsuleutkarsh-design/studio-lan-messenger"><img src="assets/quillo.png" alt="Quillo home screen" loading="lazy"></a>
+        <div class="body">
+          <h3>Quillo</h3>
+          <div class="tagline">A private messenger for your studio</div>
+          <p>Chat and rooms, files of any size, screen sharing, polls, shot status, a studio calendar and an org chart -
+            running on your own network, so nothing ever leaves the building.</p>
+          <div class="tags"><span>Studio chat</span><span>File sharing</span><span>LAN only</span><span>Python · Qt</span></div>
+          <div class="actions">
+            <a class="btn primary" href="https://github.com/capsuleutkarsh-design/studio-lan-messenger/releases/latest">Download</a>
+            <a class="btn" href="https://github.com/capsuleutkarsh-design/studio-lan-messenger">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="shot" href="https://capsuleutkarsh-design.github.io/slate-vfx/"><img src="assets/slate.png" alt="Slate dashboard" loading="lazy"></a>
+        <div class="body">
+          <h3>Slate</h3>
+          <div class="tagline">A VFX studio pipeline and office app</div>
+          <p>Shot tracking, plate renaming and review, plus leave, attendance, IT tickets, hardware and licences - one
+            server and a workstation app for the whole facility.</p>
+          <div class="tags"><span>Pipeline</span><span>Shot tracking</span><span>Studio office</span></div>
+          <div class="actions">
+            <a class="btn primary" href="https://github.com/capsuleutkarsh-design/slate-vfx/releases/latest">Download</a>
+            <a class="btn" href="https://capsuleutkarsh-design.github.io/slate-vfx/">Website</a>
+            <a class="btn" href="https://github.com/capsuleutkarsh-design/slate-vfx">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="shot" href="https://github.com/capsuleutkarsh-design/contour-vfx"><img src="assets/contour.png" alt="Contour VFX node graph" loading="lazy"></a>
+        <div class="body">
+          <h3>Contour VFX</h3>
+          <div class="tagline">Node-based AI roto for compositors</div>
+          <p>Roto, mattes, depth and camera tracking with AI models (SAM, ViTMatte, Depth Anything, COLMAP), wired as
+            nodes and exported straight to Nuke and Blender.</p>
+          <div class="tags"><span>AI roto</span><span>Mattes</span><span>Nuke</span><span>NVIDIA GPU</span></div>
+          <div class="actions">
+            <a class="btn primary" href="https://github.com/capsuleutkarsh-design/contour-vfx/releases/latest">Download</a>
+            <a class="btn" href="https://github.com/capsuleutkarsh-design/contour-vfx">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <a class="shot" href="https://capsuleutkarsh-design.github.io/automated-tracker/"><img src="assets/tracker.png" alt="Automated Tracker 2D tracking" loading="lazy"></a>
+        <div class="body">
+          <h3>Automated Tracker</h3>
+          <div class="tagline">2D tracks and 3D camera solves, automatically</div>
+          <p>Point tracking with CoTracker3 and camera solves with COLMAP, exported to Nuke, After Effects, Blender and
+            USD. One installer, everything bundled.</p>
+          <div class="tags"><span>2D tracking</span><span>Camera solve</span><span>Nuke · AE · Blender</span></div>
+          <div class="actions">
+            <a class="btn primary" href="https://github.com/capsuleutkarsh-design/automated-tracker/releases/latest">Download</a>
+            <a class="btn" href="https://capsuleutkarsh-design.github.io/automated-tracker/">Website</a>
+            <a class="btn" href="https://github.com/capsuleutkarsh-design/automated-tracker">GitHub</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div>
+      <h2>About me</h2>
+      <p>I'm a VFX artist based in Mumbai, working on compositing, roto and tracking.</p>
+      <p>Studios run on a lot of small, repetitive work - renaming plates, chasing files, asking who has the latest
+        version. I build tools that take that work away, so artists can spend their time on shots.</p>
+      <p>Everything I make is free for studios to use.</p>
+    </div>
+    <div class="skills">
+      <h3>What I work with</h3>
+      <ul>
+        <li><b>Compositing</b><span>Nuke, roto, paint, tracking</span></li>
+        <li><b>3D</b><span>Blender, camera solves</span></li>
+        <li><b>Tools</b><span>Python, PySide6 / Qt, SQLite</span></li>
+        <li><b>AI</b><span>PyTorch - SAM, CoTracker, Depth Anything</span></li>
+        <li><b>Studio</b><span>Pipelines, networks, Windows roll-outs</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top: 0">
+  <div class="wrap">
+    <div class="licence">
+      <p><b>Free for studios.</b> My tools use the
+        <a href="https://github.com/capsuleutkarsh-design/studio-lan-messenger/blob/main/LICENSE.md">UT Community Licence</a>:
+        use them and change them for your studio, but don't sell them, and send your improvements back.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <h2>Get in touch</h2>
+    <p class="sub">Questions, bugs, ideas, or using one of my tools in your studio - write to me.</p>
+    <a class="btn primary" href="mailto:capsuleutkarsh@gmail.com">✉ capsuleutkarsh@gmail.com</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Utkarsh Tripathi</span>
+    <span><a href="https://github.com/capsuleutkarsh-design">github.com/capsuleutkarsh-design</a></span>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contour VFX</title>
+<meta name="description" content="Contour VFX is a node-based Windows app for compositors: AI roto, mattes, keying, depth and 3D camera tracking with SAM, ViTMatte, CorridorKey, Depth Anything and COLMAP, delivered to Nuke and Blender. Runs on your own PC with an NVIDIA GPU.">
+<meta name="theme-color" content="#1b1b1b">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://capsuleutkarsh-design.github.io/contour-vfx/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Contour VFX">
+<meta property="og:title" content="Contour VFX">
+<meta property="og:description" content="AI roto, mattes, depth and camera tracking for compositors. Node-based, runs on your own PC, results straight into Nuke and Blender.">
+<meta property="og:url" content="https://capsuleutkarsh-design.github.io/contour-vfx/">
+<meta property="og:image" content="https://capsuleutkarsh-design.github.io/contour-vfx/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Contour VFX: AI roto, mattes, depth and camera tracking for compositors">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contour VFX">
+<meta name="twitter:description" content="AI roto, mattes, depth and camera tracking for compositors, exported to Nuke and Blender.">
+<meta name="twitter:image" content="https://capsuleutkarsh-design.github.io/contour-vfx/assets/og.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="assets/app_icon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<style>
+  /* Colours from the app itself: utvfx/ui/theme.py and branding/*.svg. */
+  :root {
+    --bg: #1b1b1b; --panel: #232323; --raised: #2d2d2d; --input: #161616;
+    --border: #3a3a3a; --border-soft: #2c2c2c;
+    --text: #e6e6e6; --body: #d6d6d6; --dim: #9d9d9d; --muted: #737373;
+    --accent: #e8833a; --accent-hi: #f09a57; --accent-dim: #8a5226; --accent-wash: #2a1f16;
+    --ok: #6fa35c; --warn: #d9a441; --bad: #d0493d;
+    /* node category colours, as in the node graph */
+    --c-media: #5b7688; --c-matte: #6b8a58; --c-keying: #4c8a7c; --c-depth: #8a6d52;
+    --c-colour: #8c7b48; --c-tracking: #7b6ba0; --c-output: #9a5a52;
+    --radius: 6px; --max: 1120px;
+    --font: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --mono: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--body);
+    font-family: var(--font); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code { font-family: var(--mono); font-size: 0.86em; color: var(--accent-hi);
+         background: var(--accent-wash); padding: 1px 6px; border-radius: 4px;
+         overflow-wrap: anywhere; }
+  pre { font-family: var(--mono); font-size: 13px; background: var(--input);
+        border: 1px solid var(--border); border-radius: var(--radius);
+        padding: 14px 16px; overflow-x: auto; color: var(--body); margin: 0; }
+  pre code { background: none; padding: 0; color: inherit; overflow-wrap: normal; }
+  kbd { font-family: var(--mono); font-size: 0.82em; color: var(--text); background: var(--raised);
+        border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 24px; }
+  @media (max-width: 600px) { .wrap { padding: 0 16px; } }
+  h1, h2, h3 { line-height: 1.2; margin: 0; color: var(--text); }
+  h2 { font-size: 30px; font-weight: 700; margin-bottom: 8px; }
+  h3 { font-size: 18px; font-weight: 600; }
+  .lead { color: var(--dim); font-size: 18px; max-width: 760px; margin: 0 0 32px; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+             text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+  section { padding: 72px 0; border-top: 1px solid var(--border-soft); }
+  @media (max-width: 600px) { section { padding: 52px 0; } h2 { font-size: 25px; } .lead { font-size: 16px; } }
+  .sub { font-size: 20px; margin: 40px 0 14px; }
+  .note { color: var(--dim); font-size: 14px; margin: 14px 0 0; }
+
+  /* nav */
+  nav { position: sticky; top: 0; z-index: 10; background: rgba(27,27,27,0.9);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-soft); }
+  nav .wrap { display: flex; align-items: center; gap: 22px; height: 60px; }
+  nav .brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 17px;
+               color: var(--text); margin-right: auto; white-space: nowrap; }
+  nav .brand:hover { text-decoration: none; }
+  nav .brand img { width: 30px; height: 30px; }
+  nav .brand span { color: #8c8c8c; font-weight: 300; }
+  nav a.link { color: var(--dim); font-size: 14px; font-weight: 500; white-space: nowrap; }
+  nav a.link:hover { color: var(--text); text-decoration: none; }
+  nav .btn { padding: 7px 14px; font-size: 14px; }
+  @media (max-width: 1060px) { nav a.link.opt { display: none; } }
+  @media (max-width: 760px) { nav a.link { display: none; } }
+
+  /* buttons */
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px;
+         border-radius: var(--radius); font-weight: 700; font-size: 15px;
+         border: 1px solid var(--border); color: var(--text); background: var(--raised);
+         transition: background .15s, border-color .15s; }
+  .btn:hover { text-decoration: none; background: #353535; border-color: #555; }
+  .btn.primary { background: var(--accent); color: #1b1b1b; border-color: var(--accent); }
+  .btn.primary:hover { background: var(--accent-hi); border-color: var(--accent-hi); }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+
+  /* hero */
+  header.hero { position: relative; overflow: hidden; padding: 88px 0 72px; }
+  header.hero::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 55% 60% at 80% 40%, rgba(232,131,58,0.10), transparent 70%),
+      url("assets/contours.svg") right center / cover no-repeat;
+  }
+  header.hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent); opacity: .85; }
+  header.hero .wrap { position: relative; display: grid; grid-template-columns: 1.3fr 1fr;
+                      gap: 48px; align-items: center; }
+  @media (max-width: 860px) { header.hero .wrap { grid-template-columns: 1fr; gap: 28px; } header.hero { padding: 56px 0 56px; } }
+  .hero h1 { font-size: clamp(44px, 7vw, 76px); font-weight: 600; letter-spacing: -0.015em; }
+  .hero h1 span { color: #8c8c8c; font-weight: 300; }
+  .hero .rule { width: 96px; height: 4px; background: var(--accent); border-radius: 2px; margin: 18px 0 20px; }
+  .hero p { font-size: 20px; color: var(--dim); max-width: 580px; margin: 0 0 28px; }
+  .hero p b { color: var(--text); font-weight: 600; }
+  @media (max-width: 600px) { .hero p { font-size: 17px; } }
+  .hero .cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .hero .meta { margin-top: 20px; font-size: 13px; color: var(--muted); }
+  .hero .meta b { color: var(--dim); font-weight: 600; }
+  .hero .art { display: flex; justify-content: center; }
+  .hero .art img { width: min(100%, 340px); height: auto; display: block;
+                   filter: drop-shadow(0 30px 60px rgba(0,0,0,0.6)) drop-shadow(0 0 48px rgba(232,131,58,0.16)); }
+  @media (max-width: 860px) { .hero .art { order: -1; justify-content: flex-start; } .hero .art img { width: 96px; } }
+
+  /* chips */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .chip { font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-wash);
+          border: 1px solid var(--accent-dim); border-radius: 999px; padding: 3px 12px; white-space: nowrap; }
+  .chip.grey { color: var(--dim); background: var(--raised); border-color: var(--border); }
+
+  /* cards */
+  .grid { display: grid; gap: 18px; }
+  .grid.two { grid-template-columns: repeat(2, 1fr); }
+  .grid.three { grid-template-columns: repeat(3, 1fr); }
+  .grid.four { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 960px) { .grid.three, .grid.four { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .grid.two, .grid.three, .grid.four { grid-template-columns: 1fr; } }
+  .grid > * { min-width: 0; }
+  .card { background: var(--panel); border: 1px solid var(--border-soft); border-radius: 10px; padding: 22px; }
+  .card h3 { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+  .card p { color: var(--dim); margin: 0 0 10px; font-size: 15px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card ul { margin: 0; padding-left: 18px; color: var(--dim); font-size: 15px; }
+  .card li { margin: 5px 0; }
+  .card li b, .card p b { color: var(--text); font-weight: 600; }
+  .card.warn { border-color: rgba(217,164,65,0.45); background: rgba(217,164,65,0.05); }
+  .card.warn h3 { color: var(--warn); }
+
+  /* node cards */
+  .node { position: relative; overflow: hidden; padding-top: 20px; display: flex; flex-direction: column; }
+  .node::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 4px; background: var(--c, var(--accent)); }
+  .node .cat { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+               color: var(--c); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; filter: brightness(1.35); }
+  .node .ico { width: 32px; height: 32px; border-radius: 8px; flex: none;
+               display: inline-flex; align-items: center; justify-content: center;
+               background: color-mix(in srgb, var(--c) 22%, transparent); }
+  .node .ico svg { width: 18px; height: 18px; stroke: #e6e6e6; fill: none;
+                   stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .node .models { margin-top: auto; padding-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
+  .node .models span { font-size: 12px; color: var(--dim); background: var(--input); border: 1px solid var(--border-soft);
+                       border-radius: 999px; padding: 1px 9px; }
+  .m-media { --c: var(--c-media); } .m-matte { --c: var(--c-matte); } .m-keying { --c: var(--c-keying); }
+  .m-depth { --c: var(--c-depth); } .m-colour { --c: var(--c-colour); } .m-tracking { --c: var(--c-tracking); }
+  .m-output { --c: var(--c-output); }
+
+  .conv { margin-top: 22px; }
+  .conv .card { background: var(--input); }
+  .conv h3 { font-size: 15px; margin-bottom: 6px; }
+  .conv p { font-size: 14px; }
+
+  /* quick start */
+  .chain { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px; margin: 0 0 26px; }
+  .chain .n { font-size: 14px; font-weight: 600; color: var(--text); background: var(--raised);
+              border: 1px solid var(--border); border-left: 4px solid var(--c); border-radius: 6px; padding: 6px 12px; white-space: nowrap; }
+  .chain .ar { color: var(--muted); font-size: 16px; }
+  .flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; counter-reset: s; }
+  @media (max-width: 900px) { .flow { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .flow { grid-template-columns: 1fr; } }
+  .step { background: var(--panel); border: 1px solid var(--border-soft); border-radius: 8px;
+          padding: 16px 18px 16px 18px; font-size: 15px; color: var(--dim); position: relative; min-width: 0; }
+  .step b.t { display: block; color: var(--text); font-size: 15px; margin-bottom: 4px; padding-right: 30px; }
+  .step b { color: var(--text); font-weight: 600; }
+  .step .n { position: absolute; top: 14px; right: 16px; font-family: var(--mono);
+             font-size: 12px; color: var(--accent); }
+
+  /* tables */
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  th, td { text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+       background: rgba(255,255,255,0.015); }
+  td:first-child { color: var(--text); font-weight: 600; }
+  td { color: var(--dim); }
+  td b { color: var(--text); font-weight: 600; }
+  .tbl { background: var(--panel); border: 1px solid var(--border-soft); border-radius: 10px; overflow-x: auto; }
+  .nc { color: var(--warn); font-weight: 600; }
+  .okc { color: var(--ok); font-weight: 600; }
+  @media (min-width: 641px) { .tbl td code { white-space: nowrap; } }
+  .vram { font-family: var(--mono); font-size: 14px; color: var(--text); white-space: nowrap; }
+  /* Stack table rows on phones so nothing scrolls sideways. */
+  @media (max-width: 640px) {
+    table.stack thead { display: none; }
+    table.stack, table.stack tbody, table.stack tr, table.stack td { display: block; width: 100%; }
+    table.stack tr { padding: 12px 16px; border-bottom: 1px solid var(--border-soft); }
+    table.stack tr:last-child { border-bottom: 0; }
+    table.stack td { padding: 2px 0; border: 0; }
+    table.stack td[data-label]::before { content: attr(data-label); display: block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+    .vram { white-space: normal; }
+  }
+
+  /* notices */
+  .notice { border-left: 3px solid var(--warn); background: rgba(217,164,65,0.06);
+            padding: 12px 16px; border-radius: 0 var(--radius) var(--radius) 0;
+            color: var(--dim); font-size: 15px; margin: 0; }
+  .notice b { color: var(--warn); }
+  .notice.info { border-left-color: var(--accent); background: rgba(232,131,58,0.06); }
+  .notice.info b { color: var(--accent-hi); }
+  .stack-gap > * + * { margin-top: 14px; }
+
+  /* download */
+  .dl { display: grid; grid-template-columns: 1.15fr 1fr; gap: 28px; }
+  @media (max-width: 860px) { .dl { grid-template-columns: 1fr; } }
+  .dl > * { min-width: 0; }
+  .files { font-family: var(--mono); font-size: 13px; color: var(--dim); background: var(--input);
+           border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; overflow-wrap: anywhere; }
+  .files span { color: var(--text); }
+  .files i { color: var(--muted); font-style: normal; }
+  ol.steps { margin: 0; padding-left: 22px; color: var(--dim); font-size: 15px; }
+  ol.steps li { margin: 10px 0; padding-left: 4px; }
+  ol.steps b { color: var(--text); font-weight: 600; }
+
+  /* screenshots */
+  .shot { margin: 0; background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+          overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.45); }
+  .shot img { display: block; width: 100%; height: auto; background: var(--input); }
+  .shot figcaption { padding: 12px 16px; font-size: 14px; color: var(--dim);
+                     border-top: 1px solid var(--border-soft); }
+  .shot figcaption b { color: var(--text); font-weight: 600; }
+  .shot-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .shot-tabs button { font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+                      padding: 7px 16px; border-radius: 999px; color: var(--dim);
+                      background: var(--raised); border: 1px solid var(--border); }
+  .shot-tabs button:hover { color: var(--text); }
+  .shot-tabs button[aria-selected="true"] { color: var(--accent); background: var(--accent-wash);
+                                            border-color: var(--accent-dim); }
+  .shot[hidden] { display: none; }
+  .shot.fit { margin-left: auto; margin-right: auto; }
+  .shots-small { margin-top: 18px; align-items: start; }
+
+  footer { padding: 36px 0 52px; border-top: 1px solid var(--border-soft); color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 14px 24px; align-items: center; }
+  footer .who { display: flex; align-items: center; gap: 10px; }
+  footer .who img { width: 22px; height: 22px; flex: none; }
+  footer a { color: var(--dim); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/mark.svg" alt="" width="30" height="30">Contour <span>VFX</span></a>
+    <a class="link" href="#nodes">Nodes</a>
+    <a class="link opt" href="#screenshots">Screenshots</a>
+    <a class="link" href="#quick-start">Quick start</a>
+    <a class="link opt" href="#nuke-blender">Nuke &amp; Blender</a>
+    <a class="link" href="#requirements">Requirements</a>
+    <a class="link" href="#download">Download</a>
+    <a class="link opt" href="#licences">Licences</a>
+    <a class="btn" data-repo href="#">
+      <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      GitHub
+    </a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Node-based AI toolkit for compositors</div>
+      <h1>Contour <span>VFX</span></h1>
+      <div class="rule"></div>
+      <p><b>AI roto, mattes, keying, depth and camera tracking for compositors.</b> Wire nodes together, render your plate, and take EXRs, roto shapes and a solved camera straight into Nuke or Blender.</p>
+      <div class="cta">
+        <a class="btn primary" data-releases href="#download">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          Download for Windows
+        </a>
+        <a class="btn" href="#nodes">See the nodes</a>
+      </div>
+      <div class="chips">
+        <span class="chip">SAM · SAM 2 · SAM 3</span><span class="chip">ViTMatte</span><span class="chip">MEMatte</span>
+        <span class="chip">VideoMaMa</span><span class="chip">CorridorKey</span><span class="chip">Depth Anything V2</span>
+        <span class="chip">COLMAP</span><span class="chip">OpenColorIO · ACES</span>
+        <span class="chip grey">Nuke</span><span class="chip grey">Blender</span>
+      </div>
+      <div class="meta"><b>Version 2.2.0-beta</b> · Windows 10 / 11, 64-bit · NVIDIA GPU · Runs on your own PC</div>
+    </div>
+    <div class="art">
+      <img src="assets/mark.svg" alt="Contour VFX mark" width="340" height="340">
+    </div>
+  </div>
+</header>
+
+<section id="nodes">
+  <div class="wrap">
+    <div class="eyebrow">The nodes</div>
+    <h2>Everything a plate needs before comp</h2>
+    <p class="lead">Each job is a node. Wire them together, render, and deliver. Everything runs on your machine: after setup the app never downloads anything and never uploads a frame.</p>
+
+    <div class="grid four">
+      <div class="card node m-media">
+        <div class="cat">Media</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/></svg></span>Media Plate</h3>
+        <p>EXR, DPX, TIFF and PNG sequences or video. Keeps the original for delivery and makes a 16-bit display copy for the AI nodes; ACES, log and video colour spaces; optional half-size working copy for 4K.</p>
+      </div>
+      <div class="card node m-matte">
+        <div class="cat">Matte</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/><circle cx="12" cy="8" r="4"/><path d="M3 3l3 3"/></svg></span>Super Matte</h3>
+        <p>Click, box or text prompts. SAM 1, SAM 2 (SAMURAI tracking) or SAM 3, refined into soft 16-bit mattes, one per layer.</p>
+        <div class="models"><span>SAM</span><span>SAMURAI</span><span>SAM 3</span><span>ViTMatte</span><span>MEMatte</span><span>VideoMaMa</span><span>GroundingDINO</span></div>
+      </div>
+      <div class="card node m-matte">
+        <div class="cat">Matte</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 17c-2-5 2-12 8-12 5 0 7 4 6 8s-6 7-10 7"/><circle cx="5" cy="17" r="1.6"/><circle cx="13" cy="5" r="1.6"/><circle cx="19" cy="13" r="1.6"/><circle cx="9" cy="20" r="1.6"/></svg></span>Matte to Shape</h3>
+        <p>Mattes become Nuke roto shapes whose points stay on the object, with feather. Outline mode for any object; body-parts mode cuts a person into head, torso and limbs, and limbs behind the body fade out using the depth map.</p>
+        <div class="models"><span>MediaPipe Pose</span></div>
+      </div>
+      <div class="card node m-keying">
+        <div class="cat">Keying</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M14 4l6 6-9 9H5v-6z"/><path d="M11 7l6 6"/></svg></span>Corridor Keyer</h3>
+        <p>Green and blue screen keying with CorridorKey: straight or premultiplied linear EXR, despill, matte clean-up and anti-flicker.</p>
+        <div class="models"><span>CorridorKey</span><span>BiRefNet</span><span>GVM</span></div>
+      </div>
+      <div class="card node m-depth">
+        <div class="cat">Depth</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M2 19l7-11 4 6 3-4 6 9z"/></svg></span>Depth</h3>
+        <p>Depth Anything V2: stable relative depth (0–1 over the shot) or metric depth in metres, as float EXR.</p>
+        <div class="models"><span>Depth Anything V2</span></div>
+      </div>
+      <div class="card node m-colour">
+        <div class="cat">Colour</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="9" r="5"/><circle cx="12" cy="15" r="5"/></svg></span>Grade · OCIO ColorSpace</h3>
+        <p>A Nuke-style grade and OpenColorIO conversions in scene-linear, on the full-quality frames.</p>
+        <div class="models"><span>OpenColorIO</span><span>ACES</span></div>
+      </div>
+      <div class="card node m-tracking">
+        <div class="cat">Tracking</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></span>3D Camera Tracker</h3>
+        <p>COLMAP 4.2 solve (global or incremental) with SIFT, LightGlue, ALIKED or LoMa features, and shot presets. Given a matte, it ignores moving objects.</p>
+        <div class="models"><span>COLMAP</span><span>LightGlue</span><span>ALIKED</span><span>LoMa</span></div>
+      </div>
+      <div class="card node m-output">
+        <div class="cat">Output</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></span>Unified Output</h3>
+        <p>Delivers everything: EXR layers (colour in ACEScg or another linear space, mattes in A, depth in Z), a camera for Nuke, Blender or USD, roto shapes, and a Nuke script with a Read per layer.</p>
+      </div>
+    </div>
+
+    <div class="grid three conv">
+      <div class="card"><h3>Colour</h3><p>The ACES studio OpenColorIO config. The working space is ACEScg and the viewer uses the ACES SDR view. Highlights above 1.0 are kept.</p></div>
+      <div class="card"><h3>Frame numbers</h3><p>Every file keeps the plate's own frame numbers: 1001 stays 1001. The timeline's In/Out limits every render.</p></div>
+      <div class="card"><h3>Rendering</h3><p>Renders are cached per node and redone only when something upstream changes. Stop, Freeze and Bypass work as in Nuke.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="screenshots">
+  <div class="wrap">
+    <div class="eyebrow">A look inside</div>
+    <h2>The app</h2>
+    <p class="lead">Node list on the left, viewer and timeline in the middle, the node graph below, and the selected node's settings and console on the right.</p>
+
+    <div class="shot-tabs" role="tablist" aria-label="Screenshots">
+      <button type="button" role="tab" aria-selected="true" aria-controls="shot-main" data-shot="shot-main">Main window</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shot-graph" data-shot="shot-graph">Node graph</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shot-help" data-shot="shot-help">User manual</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shot-credits" data-shot="shot-credits">Credits</button>
+    </div>
+    <figure class="shot" id="shot-main" role="tabpanel">
+      <img src="screenshots/contour_main.png" width="1600" height="900" alt="The Contour VFX main window: node list, viewer, timeline, node graph, Super Matte settings and console" loading="lazy">
+      <figcaption><b>The main window.</b> A Super Matte node selected: SAM model, refiner, text prompt and mask layers on the right, the graph below the viewer.</figcaption>
+    </figure>
+    <figure class="shot" id="shot-graph" role="tabpanel" hidden>
+      <img src="screenshots/contour_graph.png" width="1400" height="620" alt="A node graph: Media Plate into Grade, Super Matte and Depth, then Matte to Shape and Unified Output" loading="lazy">
+      <figcaption><b>Node based.</b> One plate feeds a grade, a Super Matte and a depth pass; the matte and depth drive Matte to Shape, and everything meets in one Unified Output.</figcaption>
+    </figure>
+    <figure class="shot fit" id="shot-help" role="tabpanel" style="max-width:1000px" hidden>
+      <img src="screenshots/contour_help.png" width="1000" height="700" alt="The built-in user manual, one page per node" loading="lazy">
+      <figcaption><b>User manual.</b> Built in, one page per node, with every input, output and parameter.</figcaption>
+    </figure>
+    <figure class="shot fit" id="shot-credits" role="tabpanel" style="max-width:900px" hidden>
+      <img src="screenshots/contour_credits.png" width="900" height="640" alt="Third-party notices and credits inside the app" loading="lazy">
+      <figcaption><b>Credits.</b> Every third-party part and its licence, inside the app.</figcaption>
+    </figure>
+
+    <div class="grid two shots-small">
+      <figure class="shot">
+        <img src="screenshots/contour_models.png" width="640" height="524" alt="The AI models window: which models are installed, download them or install from an offline pack" loading="lazy">
+        <figcaption><b>AI models.</b> See what is installed, download from the internet, or install from an offline pack.</figcaption>
+      </figure>
+      <figure class="shot">
+        <img src="screenshots/contour_settings.png" width="520" height="246" alt="Settings: output and workspace folders, clear cache, AI models" loading="lazy">
+        <figcaption><b>Settings.</b> Output and workspace folders, clear the cache, and the AI models window.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="quick-start">
+  <div class="wrap">
+    <div class="eyebrow">Quick start</div>
+    <h2>Your first matte</h2>
+    <p class="lead">Three nodes take you from a plate to a matte in Nuke or Blender.</p>
+
+    <div class="chain" aria-label="Media Plate, then Super Matte, then Unified Output, then Nuke or Blender">
+      <span class="n m-media">Media Plate</span><span class="ar">→</span>
+      <span class="n m-matte">Super Matte</span><span class="ar">→</span>
+      <span class="n m-output">Unified Output</span><span class="ar">→</span>
+      <span class="n" style="--c: var(--accent)">Nuke / Blender</span>
+    </div>
+
+    <div class="flow">
+      <div class="step"><span class="n">01</span><b class="t">Load the plate</b>Click <b>Load media…</b> above the node list and pick one frame of a sequence (EXR, DPX, TIFF, PNG…) or a video. A <b>Media Plate</b> node appears. You can also drop the file onto the graph.</div>
+      <div class="step"><span class="n">02</span><b class="t">Add a Super Matte</b>Click <b>Super Matte</b> in the node list (under Matte) and wire the Media Plate's <b>Video Plate</b> output into its <b>Video Plate</b> input.</div>
+      <div class="step"><span class="n">03</span><b class="t">Click the object</b>Select the node and click in the viewer. A click adds a point, <kbd>Shift</kbd>+click leaves something out, <kbd>Ctrl</kbd>+click removes a point. One layer per object.</div>
+      <div class="step"><span class="n">04</span><b class="t">Execute</b>Click <b>Execute</b> at the bottom of the node's settings. It renders the matte for the whole shot, or the timeline's In/Out. Where the matte drifts, go to that frame and click again.</div>
+      <div class="step"><span class="n">05</span><b class="t">Unified Output</b>Add it (under Output). Wire Super Matte's <b>Alpha Matte</b> and the Media Plate's <b>Video Plate</b> into it, set <b>Output Folder</b> (blank uses the project's), and click <b>Execute</b>.</div>
+      <div class="step"><span class="n">06</span><b class="t">Into Nuke or Blender</b>Open the written <code>_reads.nk</code> in Nuke, or run the Blender import script for a camera. <a href="#nuke-blender">What gets written</a>.</div>
+    </div>
+  </div>
+</section>
+
+<section id="nuke-blender">
+  <div class="wrap">
+    <div class="eyebrow">Straight into your comp</div>
+    <h2>Getting results into Nuke and Blender</h2>
+    <p class="lead">Unified Output writes everything into its output folder, and every file keeps the plate's frame numbers.</p>
+
+    <div class="tbl">
+      <table class="stack">
+        <thead><tr><th>What</th><th>Where</th><th>How to use it</th></tr></thead>
+        <tbody>
+          <tr><td>Plate, keyed RGBA, mattes, depth</td><td data-label="Where"><code>&lt;layer&gt;\&lt;shot&gt;_&lt;layer&gt;.&lt;frame&gt;.exr</code></td><td data-label="How">Mattes are in the alpha channel, depth in Z.</td></tr>
+          <tr><td>A Read for every layer, plus the Roto node</td><td data-label="Where"><code>exports
+uke\&lt;shot&gt;_reads.nk</code></td><td data-label="How">Open it in Nuke, or import it into your script. The <code>Contour_Roto</code> node is wired under the plate's Read.</td></tr>
+          <tr><td>Roto shapes (Matte to Shape)</td><td data-label="Where"><code>exports
+uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text editor, copy everything, click in Nuke's node graph and press <kbd>Ctrl</kbd>+<kbd>V</kbd>. A Roto node builds the animated shapes.</td></tr>
+          <tr><td>Camera and point cloud (3D Camera Tracker)</td><td data-label="Where"><code>tracking\</code></td><td data-label="How"><b>Nuke:</b> open <code>camera_track_nuke.nk</code> (or load <code>camera_track.chan</code> into a Camera). <b>Blender:</b> open <code>import_to_blender.py</code> in the <b>Scripting</b> tab and click <b>Run Script</b>.</td></tr>
+          <tr><td>What was written</td><td data-label="Where"><code>&lt;shot&gt;_export.json</code></td><td data-label="How">Colour spaces and frame ranges of every layer.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid two" style="margin-top:18px">
+      <div class="card">
+        <h3>Colour in Nuke</h3>
+        <p>Colour layers (plate, keyed RGBA) are written in <b>ACEScg</b> by default. In Nuke, set <b>Project Settings › Color › OCIO config</b> to an ACES config, then set each colour Read's <b>Input Transform</b> to <b>ACEScg</b>. Mattes and depth are data: their Reads are set to <b>raw</b>, so leave them. The <code>_reads.nk</code> carries a note with the same steps.</p>
+      </div>
+      <div class="card">
+        <h3>Alembic and .blend</h3>
+        <p>Point <b>Blender (for Alembic and .blend)</b> on the Unified Output node at your <code>blender.exe</code>, and the camera is also written as <code>tracking\camera_track.abc</code> and <code>tracking\camera_track.blend</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="requirements">
+  <div class="wrap">
+    <div class="eyebrow">What it needs</div>
+    <h2>Requirements and GPU memory</h2>
+    <p class="lead">The AI nodes run on an NVIDIA graphics card through PyTorch 2.5.1 with CUDA 12.1.</p>
+
+    <div class="grid four">
+      <div class="card"><h3>Windows</h3><p>Windows 10 or 11, 64-bit. Installs for your user only; no administrator rights needed.</p></div>
+      <div class="card"><h3>NVIDIA GPU</h3><p>Driver <b>531 or newer</b> (CUDA 12.1); the newest Studio or Game Ready driver is best. Without an NVIDIA card the AI nodes cannot run at a usable speed.</p></div>
+      <div class="card"><h3>Disk</h3><p>About <b>40 GB</b> free: about 6 GB for the app, 24 GB for the AI models, and room for renders.</p></div>
+      <div class="card warn"><h3>RTX 50-series</h3><p>Not supported on the GPU yet: this PyTorch has no code for Blackwell cards. The app tells you, then runs the AI nodes on the <b>CPU</b>, which is very slow. Support is planned for a later version.</p></div>
+    </div>
+
+    <h3 class="sub">Rough VRAM per node</h3>
+    <div class="tbl">
+      <table class="stack">
+        <thead><tr><th>Node</th><th>Rough VRAM (HD plates)</th></tr></thead>
+        <tbody>
+          <tr><td>Media Plate, Grade, OCIO ColorSpace, Matte to Shape, Unified Output</td><td data-label="VRAM"><span class="vram">little or none</span></td></tr>
+          <tr><td>Depth</td><td data-label="VRAM"><span class="vram">≈ 2–4 GB</span> Small to Large model; more with a bigger <b>Detail</b> setting</td></tr>
+          <tr><td>Super Matte: SAM 1, SAM 2 (SAMURAI) or SAM 3, with ViTMatte or MEMatte</td><td data-label="VRAM"><span class="vram">≈ 6–8 GB</span></td></tr>
+          <tr><td>Super Matte with the VideoMaMa refiner</td><td data-label="VRAM"><span class="vram">&gt; 16 GB</span></td></tr>
+          <tr><td>Corridor Keyer</td><td data-label="VRAM"><span class="vram">≈ 10 GB</span> at Processing Resolution 2048; much more at 4096</td></tr>
+          <tr><td>3D Camera Tracker (COLMAP)</td><td data-label="VRAM"><span class="vram">≈ 2–4 GB</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note"><b style="color:var(--text)">In short:</b> 8 GB is enough for most nodes on HD plates, 12 GB or more is comfortable, and VideoMaMa wants a 24 GB card. These are rough guides from the model sizes and the project's notes, not tests on every card; bigger plates and higher settings need more. The app's footer shows the card's VRAM use while you work.</p>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <div class="eyebrow">Get it</div>
+    <h2>Download and install</h2>
+    <p class="lead">The installer holds the app and its Python environment. The AI models (about 24 GB) are <b style="color:var(--text)">not</b> in it: some model licences do not allow sharing them, so they are downloaded from their official sources during setup.</p>
+    <div class="dl">
+      <div>
+        <ol class="steps">
+          <li><b>Download every file</b> from the latest release: the setup <code>.exe</code> and the <code>.bin</code> file(s) next to it.</li>
+          <li><b>Keep them in the same folder</b> and run the <code>.exe</code>. It installs to <code>%LOCALAPPDATA%\Programs\Contour VFX</code> for your user only, with no admin rights.</li>
+          <li>The installer is not code-signed yet. If Windows shows <i>“Windows protected your PC”</i>, click <b>More info → Run anyway</b>.</li>
+          <li><b>Get the models.</b> On the last page, leave <b>Download AI models</b> ticked. It resumes if interrupted and checks every file. Or do it later from <b>Start menu › Contour VFX › Download AI models</b>.</li>
+          <li><b>Start Contour VFX</b> from the Start menu and load a plate.</li>
+        </ol>
+        <p style="margin:22px 0 0"><a class="btn primary" data-releases href="#">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          Latest release</a></p>
+        <p class="note">Already have an earlier 2.x version with its models? Install over it: the models are kept.</p>
+      </div>
+      <div class="stack-gap">
+        <div class="files">
+          <span>ContourVFX_Setup_2.2.0-beta.exe</span><br>
+          <span>ContourVFX_Setup_2.2.0-beta-1.bin</span> <i>(and any further .bin)</i>
+        </div>
+        <div class="notice"><b>Download them together.</b> The installer cannot work without the <code>.bin</code> files beside it.</div>
+        <div class="card">
+          <h3>Offline model pack</h3>
+          <p>For PCs without internet. On a PC that has the models, <code>build\BUILD.bat models</code> writes 2 GB ZIP parts (<code>ContourVFX_Models_2.2.0-beta.zip.001</code>, <code>.002</code>, …). Install them from the installer's <b>Offline models</b> page, <b>AI models › Install from offline pack</b> in the app, or option 3 of <code>FIRST_SETUP.bat</code>. Every file is checked against its SHA-256.</p>
+          <p>The pack is for your own computers only: please don't upload it, because some model licences forbid that.</p>
+        </div>
+        <div class="card">
+          <h3>Two models need a step from you</h3>
+          <ul>
+            <li><b>SAM 3</b> is gated: request access at <a href="https://huggingface.co/facebook/sam3" rel="noopener">facebook/sam3</a> on Hugging Face and sign in before downloading it.</li>
+            <li><b>MEMatte</b> (a Super Matte edge refiner) is only shared on Google Drive: download it by hand, see <a data-file="MODEL_DOWNLOADS.md#downloaded-by-hand" href="#">MODEL_DOWNLOADS.md</a>.</li>
+          </ul>
+          <p style="margin-top:10px">Everything else works without them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="licences">
+  <div class="wrap">
+    <div class="eyebrow">Licences</div>
+    <h2>Free to use. Not for sale.</h2>
+    <p class="lead">Contour VFX is under the UT Community Licence 2.0. The AI models it runs keep their own licences, and a few of them are for non-commercial use only.</p>
+
+    <div class="grid two">
+      <div class="card">
+        <h3>UT Community Licence 2.0, in plain words</h3>
+        <ul>
+          <li><b>Free to use</b> on any number of computers, also for paid studio and client work.</li>
+          <li><b>What you make is yours:</b> the images, mattes, cameras and roto are yours to use as you like.</li>
+          <li><b>Not for sale:</b> Contour VFX, or a changed copy, may not be sold, rented or charged for.</li>
+          <li><b>Changes come back:</b> if you change it and use or share it, keep the name as <i>Contour VFX (modified by …)</i> and send your changes as a pull request within 30 days.</li>
+          <li><b>Keep the credits:</b> the credit line at the bottom of the window and the Credits screen stay, or the app will not start.</li>
+        </ul>
+        <p style="margin-top:12px">Copies up to 2.0.0-beta keep the Contour VFX Share-Back Licence 1.0. <a data-file="LICENSE.md" href="#">Read the full licence</a>.</p>
+      </div>
+      <div class="tbl">
+        <table class="stack">
+          <thead><tr><th>Model</th><th>Limit that still applies</th></tr></thead>
+          <tbody>
+            <tr><td>Depth Anything V2 <b>Base</b> and <b>Large</b> (relative depth)</td><td data-label="Limit"><span class="nc">Non-commercial</span> (CC BY-NC 4.0). Small and all six metric models are Apache-2.0.</td></tr>
+            <tr><td>VideoMaMa refiner (Super Matte)</td><td data-label="Limit"><span class="nc">Non-commercial</span>: code CC BY-NC 4.0; weights and Stable Video Diffusion XT under the Stability AI Community Licence. Powered by Stability AI.</td></tr>
+            <tr><td>GVM (Corridor Keyer)</td><td data-label="Limit"><span class="nc">Non-commercial</span> (CC BY-NC-SA 4.0).</td></tr>
+            <tr><td>CorridorKey (Corridor Keyer)</td><td data-label="Limit">Processing images for commercial projects is allowed. It may not be resold, redistributed, put in a competing product or offered as a paid API.</td></tr>
+            <tr><td>SAM 3 (Super Matte)</td><td data-label="Limit">Meta's SAM Licence: commercial use allowed, with conditions.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note">Everything else, including SAM, SAM 2, SAMURAI, ViTMatte, GroundingDINO, BiRefNet, MediaPipe, ALIKED, LightGlue and COLMAP, is under a permissive licence. MEMatte's and LoMa's authors do not state a licence for their weights. FFmpeg (GPL-3.0) ships as a separate program. Full list: <a data-file="THIRD_PARTY_NOTICES.md" href="#">THIRD_PARTY_NOTICES.md</a>.</p>
+    <p class="note">Questions, bugs and ideas: <a data-issues href="#">GitHub Issues</a> or <a href="mailto:capsuleutkarsh@gmail.com">capsuleutkarsh@gmail.com</a>. Please attach the log, your graphics card and what you clicked, but never footage.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="who"><img src="assets/mark.svg" alt="" width="22" height="22"><span>Contour VFX · v2.2.0-beta · © 2026 Utkarsh Tripathi · UT Community Licence 2.0</span></div>
+    <div><a data-repo href="#">GitHub</a> · <a data-issues href="#">Report a problem</a></div>
+  </div>
+</footer>
+
+<script>
+  // Screenshot tabs.
+  document.querySelectorAll(".shot-tabs button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".shot-tabs button").forEach(function (b) {
+        var on = b === btn;
+        b.setAttribute("aria-selected", on ? "true" : "false");
+        document.getElementById(b.dataset.shot).hidden = !on;
+      });
+    });
+  });
+
+  // Set this once to the repository URL. Every GitHub / releases / issues / file
+  // link on the page is filled from it.
+  const REPO = "https://github.com/capsuleutkarsh-design/ContourVFX";
+  document.querySelectorAll("[data-repo]").forEach(a => a.href = REPO);
+  document.querySelectorAll("[data-releases]").forEach(a => a.href = REPO + "/releases/latest");
+  document.querySelectorAll("[data-issues]").forEach(a => a.href = REPO + "/issues");
+  document.querySelectorAll("[data-file]").forEach(a => a.href = REPO + (/LICENSE|NOTICES/.test(a.dataset.file) ? "#licence" : ""));
+</script>
+</body>
+</html>

@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contour VFX</title>
-<meta name="description" content="Contour VFX is a node-based Windows app for compositors: AI roto, mattes, keying, depth and 3D camera tracking with SAM, ViTMatte, CorridorKey, Depth Anything and COLMAP, delivered to Nuke and Blender. Runs on your own PC with an NVIDIA GPU.">
+<meta name="description" content="Contour VFX is a node-based Windows app for compositors: AI roto, mattes, keying, geometry passes, 2D tracking and 3D camera tracking with SAM, ViTMatte, CorridorKey, NormalCrafter, MoGe-2, Video Depth Anything, AllTracker and COLMAP, delivered to Nuke and Blender. Runs on your own PC with an NVIDIA GPU.">
 <meta name="theme-color" content="#1b1b1b">
 <meta name="color-scheme" content="dark">
 <link rel="canonical" href="https://capsuleutkarsh-design.github.io/contour-vfx/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Contour VFX">
 <meta property="og:title" content="Contour VFX">
-<meta property="og:description" content="AI roto, mattes, depth and camera tracking for compositors. Node-based, runs on your own PC, results straight into Nuke and Blender.">
+<meta property="og:description" content="AI roto, mattes, geometry passes, 2D and 3D tracking for compositors. Node-based, runs on your own PC, results straight into Nuke and Blender.">
 <meta property="og:url" content="https://capsuleutkarsh-design.github.io/contour-vfx/">
 <meta property="og:image" content="https://capsuleutkarsh-design.github.io/contour-vfx/assets/og.png">
 <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="Contour VFX: AI roto, mattes, depth and camera tracking for compositors">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Contour VFX">
-<meta name="twitter:description" content="AI roto, mattes, depth and camera tracking for compositors, exported to Nuke and Blender.">
+<meta name="twitter:description" content="AI roto, mattes, geometry passes, 2D and 3D tracking for compositors, exported to Nuke and Blender.">
 <meta name="twitter:image" content="https://capsuleutkarsh-design.github.io/contour-vfx/assets/og.png">
 <link rel="icon" href="favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="assets/app_icon.svg">
@@ -281,7 +281,7 @@
       <div class="eyebrow">Node-based AI toolkit for compositors</div>
       <h1>Contour <span>VFX</span></h1>
       <div class="rule"></div>
-      <p><b>AI roto, mattes, keying, depth and camera tracking for compositors.</b> Wire nodes together, render your plate, and take EXRs, roto shapes and a solved camera straight into Nuke or Blender.</p>
+      <p><b>AI roto, mattes, keying, geometry passes and 2D and 3D tracking for compositors.</b> Wire nodes together, render your plate, and take EXRs, passes, roto shapes, tracks and a solved camera straight into Nuke or Blender.</p>
       <div class="cta">
         <a class="btn primary" data-releases href="#download">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
@@ -291,11 +291,12 @@
       </div>
       <div class="chips">
         <span class="chip">SAM · SAM 2 · SAM 3</span><span class="chip">ViTMatte</span><span class="chip">MEMatte</span>
-        <span class="chip">VideoMaMa</span><span class="chip">CorridorKey</span><span class="chip">Depth Anything V2</span>
+        <span class="chip">VideoMaMa</span><span class="chip">CorridorKey</span><span class="chip">NormalCrafter</span>
+        <span class="chip">MoGe-2</span><span class="chip">Video Depth Anything</span><span class="chip">AllTracker</span>
         <span class="chip">COLMAP</span><span class="chip">OpenColorIO · ACES</span>
         <span class="chip grey">Nuke</span><span class="chip grey">Blender</span>
       </div>
-      <div class="meta"><b>Version 2.2.0-beta</b> · Windows 10 / 11, 64-bit · NVIDIA GPU · Runs on your own PC</div>
+      <div class="meta"><b>Version 2.3.0-beta</b> · Windows 10 / 11, 64-bit · NVIDIA GPU · Runs on your own PC</div>
     </div>
     <div class="art">
       <img src="assets/mark.svg" alt="Contour VFX mark" width="340" height="340">
@@ -309,7 +310,7 @@
     <h2>Everything a plate needs before comp</h2>
     <p class="lead">Each job is a node. Wire them together, render, and deliver. Everything runs on your machine: after setup the app never downloads anything and never uploads a frame.</p>
 
-    <div class="grid four">
+    <div class="grid three">
       <div class="card node m-media">
         <div class="cat">Media</div>
         <h3><span class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 5v14M17 5v14M3 9h4M3 15h4M17 9h4M17 15h4"/></svg></span>Media Plate</h3>
@@ -318,14 +319,14 @@
       <div class="card node m-matte">
         <div class="cat">Matte</div>
         <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 20c0-4 3-7 7-7s7 3 7 7"/><circle cx="12" cy="8" r="4"/><path d="M3 3l3 3"/></svg></span>Super Matte</h3>
-        <p>Click, box or text prompts. SAM 1, SAM 2 (SAMURAI tracking) or SAM 3, refined into soft 16-bit mattes, one per layer.</p>
-        <div class="models"><span>SAM</span><span>SAMURAI</span><span>SAM 3</span><span>ViTMatte</span><span>MEMatte</span><span>VideoMaMa</span><span>GroundingDINO</span></div>
+        <p>Click, box or text prompts. SAM 1, SAM 2 (SAMURAI tracking) or SAM 3, refined into soft 16-bit mattes, one per layer. The edge band adapts (narrow on clean edges, wide on hair and motion blur), 4K is refined at full size, and with SAM 1 or SAM 3 your clicks follow the subject.</p>
+        <div class="models"><span>SAM</span><span>SAMURAI</span><span>SAM 3</span><span>ViTMatte</span><span>MEMatte</span><span>VideoMaMa</span><span>GroundingDINO</span><span>AllTracker</span></div>
       </div>
       <div class="card node m-matte">
         <div class="cat">Matte</div>
         <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M5 17c-2-5 2-12 8-12 5 0 7 4 6 8s-6 7-10 7"/><circle cx="5" cy="17" r="1.6"/><circle cx="13" cy="5" r="1.6"/><circle cx="19" cy="13" r="1.6"/><circle cx="9" cy="20" r="1.6"/></svg></span>Matte to Shape</h3>
-        <p>Mattes become Nuke roto shapes whose points stay on the object, with feather. Outline mode for any object; body-parts mode cuts a person into head, torso and limbs, and limbs behind the body fade out using the depth map.</p>
-        <div class="models"><span>MediaPipe Pose</span></div>
+        <p>Mattes become Nuke roto shapes whose points stay on the object, with feather. <b>Shape Type</b> (Bezier, B-spline, sharp Bezier or Polygon), <b>Max Points</b> and <b>Detail</b> put more points where the edge bends, like fingers. Outline mode for any object; body-parts mode cuts a person into head, torso and limbs.</p>
+        <div class="models"><span>MediaPipe Pose</span><span>AllTracker</span></div>
       </div>
       <div class="card node m-keying">
         <div class="cat">Keying</div>
@@ -333,28 +334,33 @@
         <p>Green and blue screen keying with CorridorKey: straight or premultiplied linear EXR, despill, matte clean-up and anti-flicker.</p>
         <div class="models"><span>CorridorKey</span><span>BiRefNet</span><span>GVM</span></div>
       </div>
-      <div class="card node m-depth">
-        <div class="cat">Depth</div>
-        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M2 19l7-11 4 6 3-4 6 9z"/></svg></span>Depth</h3>
-        <p>Depth Anything V2: stable relative depth (0–1 over the shot) or metric depth in metres, as float EXR.</p>
-        <div class="models"><span>Depth Anything V2</span></div>
-      </div>
       <div class="card node m-colour">
         <div class="cat">Colour</div>
-        <h3><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="9" r="5"/><circle cx="12" cy="15" r="5"/></svg></span>Grade · OCIO ColorSpace</h3>
-        <p>A Nuke-style grade and OpenColorIO conversions in scene-linear, on the full-quality frames.</p>
-        <div class="models"><span>OpenColorIO</span><span>ACES</span></div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="9" r="5"/><circle cx="15" cy="9" r="5"/><circle cx="12" cy="15" r="5"/></svg></span>Grade</h3>
+        <p>A Nuke-style grade in scene-linear, on the full-quality frames.</p>
       </div>
       <div class="card node m-tracking">
         <div class="cat">Tracking</div>
         <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 7l9-4 9 4v10l-9 4-9-4z"/><path d="M3 7l9 4 9-4M12 11v10"/></svg></span>3D Camera Tracker</h3>
-        <p>COLMAP 4.2 solve (global or incremental) with SIFT, LightGlue, ALIKED or LoMa features, and shot presets. Given a matte, it ignores moving objects.</p>
+        <p>COLMAP 4.2 solve (global or incremental) with SIFT, LightGlue, ALIKED or LoMa features, and shot presets. Given a matte, it ignores moving objects. <b>Use AI Tracks</b> feeds AllTracker tracks to COLMAP on hard shots.</p>
         <div class="models"><span>COLMAP</span><span>LightGlue</span><span>ALIKED</span><span>LoMa</span></div>
+      </div>
+      <div class="card node m-depth">
+        <div class="cat">Depth</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M2 19l7-11 4 6 3-4 6 9z"/></svg></span>Geometry Passes</h3>
+        <p>The passes a CG render gives, from a plate: normals (N), depth (Z, optional 1/Z) and position (P) in camera space, and in world space with a 3D Camera Tracker wired. <b>Depth only</b> is the quick setting.</p>
+        <div class="models"><span>NormalCrafter</span><span>MoGe-2</span><span>Video Depth Anything</span></div>
+      </div>
+      <div class="card node m-tracking">
+        <div class="cat">Tracking</div>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/></svg></span>Point Tracker</h3>
+        <p>2D tracks for Nuke in <b>Points</b>, <b>Corner Pin</b> and <b>Stabilise</b> modes. Click to add points, one Track button, drag to correct. Polished at full resolution, and written as a Tracker4, CornerPin2D and Transform.</p>
+        <div class="models"><span>AllTracker</span><span>TAPNext++</span><span>CoTracker3</span></div>
       </div>
       <div class="card node m-output">
         <div class="cat">Output</div>
-        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></span>Unified Output</h3>
-        <p>Delivers everything: EXR layers (colour in ACEScg or another linear space, mattes in A, depth in Z), a camera for Nuke, Blender or USD, roto shapes, and a Nuke script with a Read per layer.</p>
+        <h3><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></span>Export</h3>
+        <p>Delivers everything. Its inputs grow as you wire (A1, A2…), like Nuke's Merge, and it finds what each one is. Four short sections: <b>Where</b> (folder, shot name), <b>What</b> (tick what to write), <b>For</b> (Nuke, Natron, Blender) and <b>Format</b> (EXR layout, colour space).</p>
       </div>
     </div>
 
@@ -363,6 +369,7 @@
       <div class="card"><h3>Frame numbers</h3><p>Every file keeps the plate's own frame numbers: 1001 stays 1001. The timeline's In/Out limits every render.</p></div>
       <div class="card"><h3>Rendering</h3><p>Renders are cached per node and redone only when something upstream changes. Stop, Freeze and Bypass work as in Nuke.</p></div>
     </div>
+    <p class="note"><b style="color:var(--text)">Gone in 2.3.0-beta:</b> OCIO ColorSpace, Dot and Depth have left the node list, and Export replaces Unified Output. Old projects still open and render: a Dot becomes a direct wire, an old OCIO or Depth node keeps rendering, and an old Unified Output opens as Export and writes the same files.</p>
   </div>
 </section>
 
@@ -375,36 +382,35 @@
     <div class="shot-tabs" role="tablist" aria-label="Screenshots">
       <button type="button" role="tab" aria-selected="true" aria-controls="shot-main" data-shot="shot-main">Main window</button>
       <button type="button" role="tab" aria-selected="false" aria-controls="shot-graph" data-shot="shot-graph">Node graph</button>
-      <button type="button" role="tab" aria-selected="false" aria-controls="shot-help" data-shot="shot-help">User manual</button>
-      <button type="button" role="tab" aria-selected="false" aria-controls="shot-credits" data-shot="shot-credits">Credits</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shot-export" data-shot="shot-export">Export</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shot-passes" data-shot="shot-passes">Geometry Passes</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shot-tracks" data-shot="shot-tracks">Point Tracker</button>
+      <button type="button" role="tab" aria-selected="false" aria-controls="shot-models" data-shot="shot-models">AI models</button>
     </div>
     <figure class="shot" id="shot-main" role="tabpanel">
-      <img src="screenshots/contour_main.png" width="1600" height="900" alt="The Contour VFX main window: node list, viewer, timeline, node graph, Super Matte settings and console" loading="lazy">
-      <figcaption><b>The main window.</b> A Super Matte node selected: SAM model, refiner, text prompt and mask layers on the right, the graph below the viewer.</figcaption>
+      <img src="screenshots/main_window.png" width="1600" height="900" alt="The Contour VFX main window: node list, viewer, timeline, node graph, Super Matte settings and console" loading="lazy">
+      <figcaption><b>The main window.</b> The “Roto a person” template: Media Plate into Super Matte, and both into Export. Super Matte’s settings on the right.</figcaption>
     </figure>
     <figure class="shot" id="shot-graph" role="tabpanel" hidden>
-      <img src="screenshots/contour_graph.png" width="1400" height="620" alt="A node graph: Media Plate into Grade, Super Matte and Depth, then Matte to Shape and Unified Output" loading="lazy">
-      <figcaption><b>Node based.</b> One plate feeds a grade, a Super Matte and a depth pass; the matte and depth drive Matte to Shape, and everything meets in one Unified Output.</figcaption>
+      <img src="screenshots/node_graph_tab_menu.png" width="1600" height="900" alt="The node graph with the Tab node search open, listing the nodes" loading="lazy">
+      <figcaption><b>Node based.</b> Press <kbd>Tab</kbd> in the graph to search and add any of the nine nodes.</figcaption>
     </figure>
-    <figure class="shot fit" id="shot-help" role="tabpanel" style="max-width:1000px" hidden>
-      <img src="screenshots/contour_help.png" width="1000" height="700" alt="The built-in user manual, one page per node" loading="lazy">
-      <figcaption><b>User manual.</b> Built in, one page per node, with every input, output and parameter.</figcaption>
+    <figure class="shot" id="shot-export" role="tabpanel" hidden>
+      <img src="screenshots/export_panel.png" width="1600" height="900" alt="The Export node settings: Where, What (plate, passes, tracks), For and Format, with Geometry Passes, Point Tracker and Super Matte wired in" loading="lazy">
+      <figcaption><b>Export.</b> Where to write, what to write (here the plate, passes and tracks it found), for which apps, and in which format.</figcaption>
     </figure>
-    <figure class="shot fit" id="shot-credits" role="tabpanel" style="max-width:900px" hidden>
-      <img src="screenshots/contour_credits.png" width="900" height="640" alt="Third-party notices and credits inside the app" loading="lazy">
-      <figcaption><b>Credits.</b> Every third-party part and its licence, inside the app.</figcaption>
+    <figure class="shot" id="shot-passes" role="tabpanel" hidden>
+      <img src="screenshots/geometry_passes_normals.png" width="1600" height="900" alt="Geometry Passes showing a normals pass of three spheres in the viewer" loading="lazy">
+      <figcaption><b>Geometry Passes.</b> The normals pass in the viewer; depth and position are written alongside.</figcaption>
     </figure>
-
-    <div class="grid two shots-small">
-      <figure class="shot">
-        <img src="screenshots/contour_models.png" width="640" height="524" alt="The AI models window: which models are installed, download them or install from an offline pack" loading="lazy">
-        <figcaption><b>AI models.</b> See what is installed, download from the internet, or install from an offline pack.</figcaption>
-      </figure>
-      <figure class="shot">
-        <img src="screenshots/contour_settings.png" width="520" height="246" alt="Settings: output and workspace folders, clear cache, AI models" loading="lazy">
-        <figcaption><b>Settings.</b> Output and workspace folders, clear the cache, and the AI models window.</figcaption>
-      </figure>
-    </div>
+    <figure class="shot" id="shot-tracks" role="tabpanel" hidden>
+      <img src="screenshots/point_tracker_tracks.png" width="1600" height="900" alt="Point Tracker with ten AI tracks and their trails on a plate of three spheres" loading="lazy">
+      <figcaption><b>Point Tracker.</b> Ten AllTracker tracks with their trails, ready for a Tracker4 in Nuke.</figcaption>
+    </figure>
+    <figure class="shot fit" id="shot-models" role="tabpanel" style="max-width:1000px" hidden>
+      <img src="screenshots/model_manager.png" width="1000" height="720" alt="The AI models window on first start: models grouped by node, with size, licence and status" loading="lazy">
+      <figcaption><b>AI models.</b> On first start, pick what to download, or install from an offline pack. Each model shows its size and licence.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -414,10 +420,10 @@
     <h2>Your first matte</h2>
     <p class="lead">Three nodes take you from a plate to a matte in Nuke or Blender.</p>
 
-    <div class="chain" aria-label="Media Plate, then Super Matte, then Unified Output, then Nuke or Blender">
+    <div class="chain" aria-label="Media Plate, then Super Matte, then Export, then Nuke or Blender">
       <span class="n m-media">Media Plate</span><span class="ar">→</span>
       <span class="n m-matte">Super Matte</span><span class="ar">→</span>
-      <span class="n m-output">Unified Output</span><span class="ar">→</span>
+      <span class="n m-output">Export</span><span class="ar">→</span>
       <span class="n" style="--c: var(--accent)">Nuke / Blender</span>
     </div>
 
@@ -425,8 +431,8 @@
       <div class="step"><span class="n">01</span><b class="t">Load the plate</b>Click <b>Load media…</b> above the node list and pick one frame of a sequence (EXR, DPX, TIFF, PNG…) or a video. A <b>Media Plate</b> node appears. You can also drop the file onto the graph.</div>
       <div class="step"><span class="n">02</span><b class="t">Add a Super Matte</b>Click <b>Super Matte</b> in the node list (under Matte) and wire the Media Plate's <b>Video Plate</b> output into its <b>Video Plate</b> input.</div>
       <div class="step"><span class="n">03</span><b class="t">Click the object</b>Select the node and click in the viewer. A click adds a point, <kbd>Shift</kbd>+click leaves something out, <kbd>Ctrl</kbd>+click removes a point. One layer per object.</div>
-      <div class="step"><span class="n">04</span><b class="t">Execute</b>Click <b>Execute</b> at the bottom of the node's settings. It renders the matte for the whole shot, or the timeline's In/Out. Where the matte drifts, go to that frame and click again.</div>
-      <div class="step"><span class="n">05</span><b class="t">Unified Output</b>Add it (under Output). Wire Super Matte's <b>Alpha Matte</b> and the Media Plate's <b>Video Plate</b> into it, set <b>Output Folder</b> (blank uses the project's), and click <b>Execute</b>.</div>
+      <div class="step"><span class="n">04</span><b class="t">Render</b>Click <b>Render</b> at the bottom of the node's settings. It renders the matte for the whole shot, or the timeline's In/Out. Where the matte drifts, go to that frame and click again.</div>
+      <div class="step"><span class="n">05</span><b class="t">Export</b>Add it (under Output). Wire the Media Plate into <b>A1</b> and Super Matte's <b>Alpha Matte</b> into <b>A2</b> (a new input appears each time). Tick what to write under <b>What</b>, set <b>Folder</b> under <b>Where</b> (blank uses the project's <code>exports</code> folder), and click <b>Render</b>.</div>
       <div class="step"><span class="n">06</span><b class="t">Into Nuke or Blender</b>Open the written <code>_reads.nk</code> in Nuke, or run the Blender import script for a camera. <a href="#nuke-blender">What gets written</a>.</div>
     </div>
   </div>
@@ -436,18 +442,18 @@
   <div class="wrap">
     <div class="eyebrow">Straight into your comp</div>
     <h2>Getting results into Nuke and Blender</h2>
-    <p class="lead">Unified Output writes everything into its output folder, and every file keeps the plate's frame numbers.</p>
+    <p class="lead">Export writes everything into its folder (by default the project's <code>exports</code> folder), and every file keeps the plate's frame numbers.</p>
 
     <div class="tbl">
       <table class="stack">
         <thead><tr><th>What</th><th>Where</th><th>How to use it</th></tr></thead>
         <tbody>
-          <tr><td>Plate, keyed RGBA, mattes, depth</td><td data-label="Where"><code>&lt;layer&gt;\&lt;shot&gt;_&lt;layer&gt;.&lt;frame&gt;.exr</code></td><td data-label="How">Mattes are in the alpha channel, depth in Z.</td></tr>
-          <tr><td>A Read for every layer, plus the Roto node</td><td data-label="Where"><code>exports
-uke\&lt;shot&gt;_reads.nk</code></td><td data-label="How">Open it in Nuke, or import it into your script. The <code>Contour_Roto</code> node is wired under the plate's Read.</td></tr>
-          <tr><td>Roto shapes (Matte to Shape)</td><td data-label="Where"><code>exports
-uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text editor, copy everything, click in Nuke's node graph and press <kbd>Ctrl</kbd>+<kbd>V</kbd>. A Roto node builds the animated shapes.</td></tr>
-          <tr><td>Camera and point cloud (3D Camera Tracker)</td><td data-label="Where"><code>tracking\</code></td><td data-label="How"><b>Nuke:</b> open <code>camera_track_nuke.nk</code> (or load <code>camera_track.chan</code> into a Camera). <b>Blender:</b> open <code>import_to_blender.py</code> in the <b>Scripting</b> tab and click <b>Run Script</b>.</td></tr>
+          <tr><td>Plate, keyed RGBA, mattes, depth, geometry passes</td><td data-label="Where"><code>&lt;layer&gt;\&lt;shot&gt;_&lt;layer&gt;.&lt;frame&gt;.exr</code></td><td data-label="How">Mattes are in the alpha channel, depth in Z. Passes keep every channel (<code>N</code>, <code>Z</code>, <code>P</code>, and <code>Nworld</code>, <code>Pworld</code> with a camera) in full float.</td></tr>
+          <tr><td>A Read for every layer, the Roto node, and the Point Tracker's Tracker4, CornerPin2D and Transforms, all wired to the plate's Read</td><td data-label="Where"><code>exports\nuke\&lt;shot&gt;_reads.nk</code></td><td data-label="How">Open it in Nuke, or import it into your script. The passes Read is raw, with a note on Relight and PositionToPoints.</td></tr>
+          <tr><td>The Point Tracker's nodes on their own</td><td data-label="Where"><code>exports\nuke\&lt;shot&gt;_tracks.nk</code></td><td data-label="How">Copy everything, click in Nuke's node graph and press <kbd>Ctrl</kbd>+<kbd>V</kbd>: a Tracker4 with its match-move (or stabilize) baked in, plus a CornerPin2D or the stabilise and match-move Transforms.</td></tr>
+          <tr><td>Roto shapes (Matte to Shape)</td><td data-label="Where"><code>exports\nuke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text editor, copy everything, click in Nuke's node graph and press <kbd>Ctrl</kbd>+<kbd>V</kbd>. A Roto node builds the animated shapes.</td></tr>
+          <tr><td>Tracks and roto for Natron and Blender</td><td data-label="Where"><code>exports\natron\</code>, <code>exports\blender\</code></td><td data-label="How"><b>Natron:</b> open the <code>_natron.py</code> script, or run it in the Script Editor. <b>Blender:</b> run <code>&lt;shot&gt;_tracks_blender.py</code> in the <b>Scripting</b> tab with the plate's clip open.</td></tr>
+          <tr><td>Camera and point cloud (3D Camera Tracker)</td><td data-label="Where"><code>exports\tracking\</code></td><td data-label="How"><b>Nuke:</b> open <code>camera_track_nuke.nk</code> (or load <code>camera_track.chan</code> into a Camera). <b>Blender:</b> open <code>import_to_blender.py</code> in the <b>Scripting</b> tab and click <b>Run Script</b>.</td></tr>
           <tr><td>What was written</td><td data-label="Where"><code>&lt;shot&gt;_export.json</code></td><td data-label="How">Colour spaces and frame ranges of every layer.</td></tr>
         </tbody>
       </table>
@@ -456,11 +462,11 @@ uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text edito
     <div class="grid two" style="margin-top:18px">
       <div class="card">
         <h3>Colour in Nuke</h3>
-        <p>Colour layers (plate, keyed RGBA) are written in <b>ACEScg</b> by default. In Nuke, set <b>Project Settings › Color › OCIO config</b> to an ACES config, then set each colour Read's <b>Input Transform</b> to <b>ACEScg</b>. Mattes and depth are data: their Reads are set to <b>raw</b>, so leave them. The <code>_reads.nk</code> carries a note with the same steps.</p>
+        <p>Colour layers (plate, keyed RGBA) are written in <b>ACEScg</b> by default (Export's <b>Colour space</b>, under Format). In Nuke, set <b>Project Settings › Color › OCIO config</b> to an ACES config, then set each colour Read's <b>Input Transform</b> to <b>ACEScg</b>. Mattes and depth are data: their Reads are set to <b>raw</b>, so leave them. The <code>_reads.nk</code> carries a note with the same steps.</p>
       </div>
       <div class="card">
-        <h3>Alembic and .blend</h3>
-        <p>Point <b>Blender (for Alembic and .blend)</b> on the Unified Output node at your <code>blender.exe</code>, and the camera is also written as <code>tracking\camera_track.abc</code> and <code>tracking\camera_track.blend</code>.</p>
+        <h3>Alembic, USD and .blend</h3>
+        <p>Point <b>Blender (for Alembic, USD and .blend)</b>, under <b>Advanced</b> on the Export node, at your <code>blender.exe</code>, and the camera is also written as <code>tracking\camera_track.abc</code>, <code>.usd</code> and <code>.blend</code>. Alembic and USD keep time in seconds, so set your scene to the plate's frame rate first.</p>
       </div>
     </div>
   </div>
@@ -475,7 +481,7 @@ uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text edito
     <div class="grid four">
       <div class="card"><h3>Windows</h3><p>Windows 10 or 11, 64-bit. Installs for your user only; no administrator rights needed.</p></div>
       <div class="card"><h3>NVIDIA GPU</h3><p>Driver <b>531 or newer</b> (CUDA 12.1); the newest Studio or Game Ready driver is best. Without an NVIDIA card the AI nodes cannot run at a usable speed.</p></div>
-      <div class="card"><h3>Disk</h3><p>About <b>40 GB</b> free: about 6 GB for the app, 24 GB for the AI models, and room for renders.</p></div>
+      <div class="card"><h3>Disk</h3><p>About <b>50 GB</b> free: about 6 GB for the app, about 30 GB for the AI models, and room for renders.</p></div>
       <div class="card warn"><h3>RTX 50-series</h3><p>Not supported on the GPU yet: this PyTorch has no code for Blackwell cards. The app tells you, then runs the AI nodes on the <b>CPU</b>, which is very slow. Support is planned for a later version.</p></div>
     </div>
 
@@ -484,16 +490,18 @@ uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text edito
       <table class="stack">
         <thead><tr><th>Node</th><th>Rough VRAM (HD plates)</th></tr></thead>
         <tbody>
-          <tr><td>Media Plate, Grade, OCIO ColorSpace, Matte to Shape, Unified Output</td><td data-label="VRAM"><span class="vram">little or none</span></td></tr>
-          <tr><td>Depth</td><td data-label="VRAM"><span class="vram">≈ 2–4 GB</span> Small to Large model; more with a bigger <b>Detail</b> setting</td></tr>
-          <tr><td>Super Matte: SAM 1, SAM 2 (SAMURAI) or SAM 3, with ViTMatte or MEMatte</td><td data-label="VRAM"><span class="vram">≈ 6–8 GB</span></td></tr>
-          <tr><td>Super Matte with the VideoMaMa refiner</td><td data-label="VRAM"><span class="vram">&gt; 16 GB</span></td></tr>
+          <tr><td>Media Plate, Grade, Export</td><td data-label="VRAM"><span class="vram">little or none</span></td></tr>
+          <tr><td>Matte to Shape</td><td data-label="VRAM"><span class="vram">&lt; 1 GB</span> AllTracker for point motion</td></tr>
+          <tr><td>Super Matte: SAM 1, SAM 2 (SAMURAI) or SAM 3, with ViTMatte or MEMatte</td><td data-label="VRAM"><span class="vram">≈ 6–8 GB</span> one model on the card at a time; click following peaks at about 4.2 GB</td></tr>
+          <tr><td>Super Matte with the VideoMaMa refiner</td><td data-label="VRAM"><span class="vram">≈ 24 GB</span> slow on a 16 GB card</td></tr>
           <tr><td>Corridor Keyer</td><td data-label="VRAM"><span class="vram">≈ 10 GB</span> at Processing Resolution 2048; much more at 4096</td></tr>
-          <tr><td>3D Camera Tracker (COLMAP)</td><td data-label="VRAM"><span class="vram">≈ 2–4 GB</span></td></tr>
+          <tr><td>3D Camera Tracker (COLMAP)</td><td data-label="VRAM"><span class="vram">≈ 2–4 GB</span> about 4.5 GB with <b>Use AI Tracks</b></td></tr>
+          <tr><td>Geometry Passes</td><td data-label="VRAM"><span class="vram">≈ 10–15 GB</span> with NormalCrafter at 1024 px; with less free it runs smaller and says so in the log. <b>Depth only</b> needs about 3 GB</td></tr>
+          <tr><td>Point Tracker</td><td data-label="VRAM"><span class="vram">≈ 1.6–4.5 GB</span> AllTracker about 4.5 GB, TAPNext++ 1.7 GB, CoTracker3 1.6 GB; Classic none</td></tr>
         </tbody>
       </table>
     </div>
-    <p class="note"><b style="color:var(--text)">In short:</b> 8 GB is enough for most nodes on HD plates, 12 GB or more is comfortable, and VideoMaMa wants a 24 GB card. These are rough guides from the model sizes and the project's notes, not tests on every card; bigger plates and higher settings need more. The app's footer shows the card's VRAM use while you work.</p>
+    <p class="note"><b style="color:var(--text)">In short:</b> 8 GB is enough for most nodes on HD plates, 12 GB or more is comfortable, 16 GB runs Geometry Passes at full quality, and VideoMaMa wants a 24 GB card. These are rough guides from the model sizes and the project's notes, not tests on every card; bigger plates and higher settings need more. The app's footer shows the card's VRAM use while you work.</p>
   </div>
 </section>
 
@@ -501,7 +509,7 @@ uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text edito
   <div class="wrap">
     <div class="eyebrow">Get it</div>
     <h2>Download and install</h2>
-    <p class="lead">The installer holds the app and its Python environment. The AI models (about 24 GB) are <b style="color:var(--text)">not</b> in it: some model licences do not allow sharing them, so they are downloaded from their official sources during setup.</p>
+    <p class="lead">The installer holds the app and its Python environment. The AI models (about 30 GB) are <b style="color:var(--text)">not</b> in it: some model licences do not allow sharing them, so they are downloaded from their official sources during setup.</p>
     <div class="dl">
       <div>
         <ol class="steps">
@@ -514,17 +522,17 @@ uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text edito
         <p style="margin:22px 0 0"><a class="btn primary" data-releases href="#">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
           Latest release</a></p>
-        <p class="note">Already have an earlier 2.x version with its models? Install over it: the models are kept.</p>
+        <p class="note">Already have an earlier 2.x version with its models? Install over it: the models are kept, and only the new ones are downloaded.</p>
       </div>
       <div class="stack-gap">
         <div class="files">
-          <span>ContourVFX_Setup_2.2.0-beta.exe</span><br>
-          <span>ContourVFX_Setup_2.2.0-beta-1.bin</span> <i>(and any further .bin)</i>
+          <span>ContourVFX_Setup_2.3.0-beta.exe</span><br>
+          <span>ContourVFX_Setup_2.3.0-beta-1.bin</span> <i>(and any further .bin)</i>
         </div>
         <div class="notice"><b>Download them together.</b> The installer cannot work without the <code>.bin</code> files beside it.</div>
         <div class="card">
           <h3>Offline model pack</h3>
-          <p>For PCs without internet. On a PC that has the models, <code>build\BUILD.bat models</code> writes 2 GB ZIP parts (<code>ContourVFX_Models_2.2.0-beta.zip.001</code>, <code>.002</code>, …). Install them from the installer's <b>Offline models</b> page, <b>AI models › Install from offline pack</b> in the app, or option 3 of <code>FIRST_SETUP.bat</code>. Every file is checked against its SHA-256.</p>
+          <p>For PCs without internet. An offline model pack comes as 2 GB ZIP parts (<code>ContourVFX_Models_2.3.0-beta.zip.001</code>, <code>.002</code>, …). Install it from the installer's <b>Offline models</b> page, or <b>AI models › Install from offline pack</b> in the app. Every file is checked against its SHA-256.</p>
           <p>The pack is for your own computers only: please don't upload it, because some model licences forbid that.</p>
         </div>
         <div class="card">
@@ -562,8 +570,10 @@ uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text edito
         <table class="stack">
           <thead><tr><th>Model</th><th>Limit that still applies</th></tr></thead>
           <tbody>
-            <tr><td>Depth Anything V2 <b>Base</b> and <b>Large</b> (relative depth)</td><td data-label="Limit"><span class="nc">Non-commercial</span> (CC BY-NC 4.0). Small and all six metric models are Apache-2.0.</td></tr>
+            <tr><td>Depth Anything V2 <b>Base</b> and <b>Large</b> (optional, for old projects' Depth node)</td><td data-label="Limit"><span class="nc">Non-commercial</span> (CC BY-NC 4.0). Small and all six metric models are Apache-2.0.</td></tr>
             <tr><td>VideoMaMa refiner (Super Matte)</td><td data-label="Limit"><span class="nc">Non-commercial</span>: code CC BY-NC 4.0; weights and Stable Video Diffusion XT under the Stability AI Community Licence. Powered by Stability AI.</td></tr>
+            <tr><td>NormalCrafter (Geometry Passes' default normals)</td><td data-label="Limit">Built on Stable Video Diffusion: Stability AI Community Licence, free under US$1M yearly revenue. Powered by Stability AI. Normals “From the steady depth” avoids it.</td></tr>
+            <tr><td>CoTracker3 (Point Tracker, optional)</td><td data-label="Limit"><span class="nc">Non-commercial</span> (CC BY-NC 4.0).</td></tr>
             <tr><td>GVM (Corridor Keyer)</td><td data-label="Limit"><span class="nc">Non-commercial</span> (CC BY-NC-SA 4.0).</td></tr>
             <tr><td>CorridorKey (Corridor Keyer)</td><td data-label="Limit">Processing images for commercial projects is allowed. It may not be resold, redistributed, put in a competing product or offered as a paid API.</td></tr>
             <tr><td>SAM 3 (Super Matte)</td><td data-label="Limit">Meta's SAM Licence: commercial use allowed, with conditions.</td></tr>
@@ -571,14 +581,14 @@ uke\&lt;shot&gt;_roto.nk</code></td><td data-label="How">Open it in a text edito
         </table>
       </div>
     </div>
-    <p class="note">Everything else, including SAM, SAM 2, SAMURAI, ViTMatte, GroundingDINO, BiRefNet, MediaPipe, ALIKED, LightGlue and COLMAP, is under a permissive licence. MEMatte's and LoMa's authors do not state a licence for their weights. FFmpeg (GPL-3.0) ships as a separate program. Full list: <a data-file="THIRD_PARTY_NOTICES.md" href="#">THIRD_PARTY_NOTICES.md</a>.</p>
+    <p class="note">Everything else, including SAM, SAM 2, SAMURAI, ViTMatte, GroundingDINO, BiRefNet, MediaPipe, MoGe-2, Video Depth Anything, AllTracker, TAPNext++, ALIKED, LightGlue and COLMAP, is under a permissive licence. MEMatte's and LoMa's authors do not state a licence for their weights. FFmpeg (GPL-3.0) ships as a separate program. Full list: <a data-file="THIRD_PARTY_NOTICES.md" href="#">THIRD_PARTY_NOTICES.md</a>.</p>
     <p class="note">Questions, bugs and ideas: <a data-issues href="#">GitHub Issues</a> or <a href="mailto:capsuleutkarsh@gmail.com">capsuleutkarsh@gmail.com</a>. Please attach the log, your graphics card and what you clicked, but never footage.</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="who"><img src="assets/mark.svg" alt="" width="22" height="22"><span>Contour VFX · v2.2.0-beta · © 2026 Utkarsh Tripathi · UT Community Licence 2.0</span></div>
+    <div class="who"><img src="assets/mark.svg" alt="" width="22" height="22"><span>Contour VFX · v2.3.0-beta · © 2026 Utkarsh Tripathi · UT Community Licence 2.0</span></div>
     <div><a data-repo href="#">GitHub</a> · <a data-issues href="#">Report a problem</a></div>
   </div>
 </footer>

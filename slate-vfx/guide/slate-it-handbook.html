@@ -117,7 +117,7 @@
 
 <div class="wrap">
 
-<div class="eyebrow">Slate BETA 2.2.0 &middot; for IT</div>
+<div class="eyebrow">Slate BETA 2.3.0 &middot; for IT</div>
 <h1 style="margin-top:8px">Slate for IT</h1>
 <p class="lede">Everything IT does with Slate, from the first install to the day you move the server. Each step is one thing to do. The words in bold are the words on the screen.</p>
 
@@ -130,7 +130,7 @@
   <a class="cover server" href="#care">
     <svg viewBox="0 0 56 56" role="img" aria-label="Heart line"><path d="M4 30 h12 l6 -14 l8 26 l6 -12 h16" fill="none" stroke="currentColor" stroke-width="3"/></svg>
     <h3>Keep it healthy</h3>
-    <div class="who">Dashboard, Analytics, backups every 6 hours, maintenance, logs, publishing updates.</div>
+    <div class="who">Dashboard, Analytics, hourly backups to the shared folder, maintenance, logs, publishing updates.</div>
   </a>
   <a class="cover studio" href="#recover">
     <svg viewBox="0 0 56 56" role="img" aria-label="Key"><circle cx="18" cy="28" r="10" fill="none" stroke="currentColor" stroke-width="3"/><path d="M28 28 h22 M42 28 v8 M48 28 v6" fill="none" stroke="currentColor" stroke-width="3"/></svg>
@@ -151,7 +151,7 @@
 <p>Slate has three parts. One <b>server PC</b> runs Slate Server and keeps the studio database on its own disk. One <b>shared folder</b> on the network, called <code>Slate_Central</code>, holds files every PC needs. Every other PC is a <b>workstation</b> with Slate Studio, Slate Operations, or both.</p>
 
 <figure>
-<svg viewBox="0 0 900 400" role="img" aria-label="The server PC runs Slate Server, PostgreSQL on port 5440 and the connection pool on port 6432, and keeps the database, backups and the slate_recovery folder on its own disk. Workstations with Slate Studio and Slate Operations talk to the server over the network. All PCs read and write the Slate_Central shared folder, which holds Updates, Commands, LiveStatus, Logs, Cache and Config.">
+<svg viewBox="0 0 900 400" role="img" aria-label="The server PC runs Slate Server, PostgreSQL on port 5440 and the connection pool on port 6432, and keeps the database and the slate_recovery folder on its own disk; its hourly backups go to Slate_Server in the shared folder. Workstations with Slate Studio and Slate Operations talk to the server over the network. All PCs read and write the Slate_Central shared folder, which holds Updates, Commands, LiveStatus, Logs, Cache, Config and Slate_Server.">
   <defs><marker id="arA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs>
   <!-- workstations -->
   <g stroke-width="2">
@@ -178,14 +178,14 @@
     <text x="358" y="164">Connection pool  &#183;  TCP 6432</text>
     <text x="358" y="204" font-weight="600">On this PC's own disk:</text>
     <text x="358" y="222">LocalDatabase (the data)</text>
-    <text x="358" y="240">Backups</text>
+    <text x="358" y="240">pgbouncer, pg_server.log</text>
     <text x="358" y="258">slate_recovery (key, passwords)</text>
   </g>
   <!-- share -->
   <path d="M660 52 h60 l16 16 h144 v196 h-220 z" fill="var(--panel)" stroke="currentColor" stroke-width="2"/>
   <g fill="currentColor"><text x="672" y="92" font-size="15" font-weight="600">Slate_Central</text><text x="672" y="110" font-size="12" fill="var(--text-2)">shared folder on the network</text></g>
   <g fill="currentColor" font-size="12.5" class="mono">
-    <text x="672" y="136">Updates\releases</text><text x="672" y="156">Commands</text><text x="672" y="176">LiveStatus</text><text x="672" y="196">Logs, Logs\Audit</text><text x="672" y="216">Cache, Thumbnails</text><text x="672" y="236">Config, Attendance</text>
+    <text x="672" y="136">Updates\releases</text><text x="672" y="156">Commands</text><text x="672" y="176">LiveStatus</text><text x="672" y="196">Logs, Logs\Audit</text><text x="672" y="216">Cache, Thumbnails</text><text x="672" y="236">Config, Attendance</text><text x="672" y="256">Slate_Server (backups)</text>
   </g>
   <!-- arrows -->
   <g stroke="var(--server)" stroke-width="3" fill="none" marker-end="url(#arA)" marker-start="url(#arA)">
@@ -204,14 +204,14 @@
 <figcaption>Workstations save and read through the server. Files go to the shared folder. The server PC also needs the shared folder: it publishes updates there.</figcaption>
 </figure>
 
-<div class="note warn"><b>Two folders called Slate_Central</b>The <strong>shared</strong> <code>Slate_Central</code> is on the network, for example <code>Z:\Slate_Central</code> or <code>\\server\share\Slate_Central</code>. The server PC also has a <strong>local</strong> folder with the same name, <code>%LOCALAPPDATA%\Slate_Central</code>. That local one holds the database, the backups and the Recovery Key's fingerprint. Never mix them up, and never delete the local one.</div>
+<div class="note warn"><b>Two folders called Slate_Central</b>The <strong>shared</strong> <code>Slate_Central</code> is on the network, for example <code>Z:\Slate_Central</code> or <code>\\server\share\Slate_Central</code>. The server PC also has a <strong>local</strong> folder with the same name, <code>%LOCALAPPDATA%\Slate_Central</code>. That local one holds the database and the Recovery Key's fingerprint. The server's backups go to the <strong>shared</strong> one, in <code>Slate_Central\Slate_Server\Backups</code>. Never mix them up, and never delete the local one.</div>
 
 <h3>Three installers: who gets which</h3>
 <div class="tablewrap keep"><table>
   <tr><th>Installer</th><th>Start menu</th><th>Holds</th></tr>
-  <tr><td><code>setup_Slate Server_vBETA 2.2.0.exe</code></td><td><b>Slate Server</b>, <b>Recover Slate</b></td><td>Slate Server, the database (PostgreSQL 17), the connection pool (PgBouncer), Recover Slate</td></tr>
-  <tr><td><code>setup_Slate_Studio_vBETA 2.2.0.exe</code></td><td><b>Slate</b></td><td>Slate Studio (window title <b>Slate VFX</b>): the PRODUCTION screens, ffmpeg, OpenRV</td></tr>
-  <tr><td><code>setup_Slate_Ops_vBETA 2.2.0.exe</code></td><td><b>Slate Operations</b></td><td>Slate Operations: Attendance, Leave, IT Support and the office screens, ffmpeg</td></tr>
+  <tr><td><code>setup_Slate Server_vBETA 2.3.0.exe</code></td><td><b>Slate Server</b>, <b>Recover Slate</b></td><td>Slate Server, the database (PostgreSQL 17), the connection pool (PgBouncer), Recover Slate</td></tr>
+  <tr><td><code>setup_Slate_Studio_vBETA 2.3.0.exe</code></td><td><b>Slate</b></td><td>Slate Studio (window title <b>Slate VFX</b>): the PRODUCTION screens, ffmpeg, OpenRV</td></tr>
+  <tr><td><code>setup_Slate_Ops_vBETA 2.3.0.exe</code></td><td><b>Slate Operations</b></td><td>Slate Operations: Attendance, Leave, IT Support and the office screens, ffmpeg</td></tr>
 </table></div>
 
 <p>Slate Studio shows only <b>Home</b>, the <b>PRODUCTION</b> screens and <b>Settings</b>. Everything under <b>PEOPLE</b> (Attendance, Leave, Joining &amp; Leaving), <b>IT &amp; INFRA</b> (Hardware, Licences, IT Support, Deployment) and <b>ADMINISTRATION</b> (Users &amp; Roles, Admin Panel) is only in Slate Operations. Punching in, asking for leave and raising an IT ticket all happen in Slate Operations. So:</p>
@@ -270,7 +270,7 @@
 <h3>1. Install Slate Server</h3>
 <ol class="steps">
   <li><svg viewBox="0 0 44 44"><rect x="8" y="8" width="28" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><rect x="8" y="24" width="28" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="3"/></svg><b>Pick the server PC</b><span>Always on, wired network, a fixed address (a DHCP reservation). The database lives on its own disk.</span></li>
-  <li><svg viewBox="0 0 44 44"><path d="M22 6 v20 M14 18 l8 8 l8 -8" fill="none" stroke="currentColor" stroke-width="3"/><line x1="8" y1="36" x2="36" y2="36" stroke="currentColor" stroke-width="3"/></svg><b>Run the server installer</b><span><code>setup_Slate Server_vBETA 2.2.0.exe</code>. Sign in to Windows as the account that will run the server every day.</span></li>
+  <li><svg viewBox="0 0 44 44"><path d="M22 6 v20 M14 18 l8 8 l8 -8" fill="none" stroke="currentColor" stroke-width="3"/><line x1="8" y1="36" x2="36" y2="36" stroke="currentColor" stroke-width="3"/></svg><b>Run the server installer</b><span><code>setup_Slate Server_vBETA 2.3.0.exe</code>. Sign in to Windows as the account that will run the server every day.</span></li>
   <li><svg viewBox="0 0 44 44"><path d="M6 12 h12 l4 4 h16 v20 h-32 z" fill="none" stroke="currentColor" stroke-width="3"/></svg><b>Select Slate_Central Shared Folder</b><span>Type the shared folder in <strong>Server Root Path</strong>, e.g. <code>Z:\Slate_Central</code>. It cannot be left blank. Use the same path on every PC.</span></li>
   <li><svg viewBox="0 0 44 44"><path d="M8 24 L18 34 L36 12" fill="none" stroke="var(--ok)" stroke-width="4"/></svg><b>Finish</b><span>The Start menu now has <strong>Slate Server</strong> and <strong>Recover Slate</strong>.</span></li>
 </ol>
@@ -578,44 +578,32 @@
   <tr><td><b>Tables in Database</b></td><td>Above 0</td><td>0 on an old studio means the wrong folder. See <a href="#help">When something goes wrong</a>.</td></tr>
   <tr><td><b>Connection Pool</b></td><td><code>port 6432</code></td><td><b>stopped</b> or <b>wrong database</b>: press <b>Restart pool</b>.</td></tr>
   <tr><td>Warning lines under the cards</td><td>None</td><td>Read them. Each says what to do.</td></tr>
-  <tr><td>Operations: last backup</td><td>"Last backup less than a day ago"</td><td>Red text: press <b>Back up now</b> and find out why the automatic one failed (SYSTEM LOGS).</td></tr>
+  <tr><td>Operations: last backup</td><td>"Last backup 20 min ago - kept in &hellip;\Slate_Server\Backups"</td><td>Red text: press <b>Back up now</b> and find out why the automatic one failed (SYSTEM LOGS). If it says the studio folder cannot be reached, the backups are on the server PC only until the share is back.</td></tr>
 </table></div>
 
 <h3>Analytics</h3>
 <p><b>Database Analytics</b> shows <b>Active PCs</b>, <b>Total Projects</b>, <b>Stock Assets</b>, <b>DB Load</b>, <b>Database Size</b>, <b>CPU Usage</b> and <b>RAM Usage</b>, then <b>Live Connected Clients</b>. When one PC holds the database up and everyone is slow, select its session and press <b>Disconnect selected</b>. Slate asks the session to stop first, and cuts it off only if it ignores that. Anything that PC was part way through saving is lost.</p>
 
 <h3>Operations: backups</h3>
-<figure>
-<svg viewBox="0 0 900 220" role="img" aria-label="A day on a timeline: Slate Server checks every 6 hours and 5 minutes after it starts. It takes a backup only when the newest one is more than a day old and the database is running. After each backup it deletes backups older than 30 days, but always keeps the newest 7.">
-  <line x1="40" y1="70" x2="860" y2="70" stroke="currentColor" stroke-width="2"/>
-  <g fill="currentColor" font-size="12" text-anchor="middle"><text x="40" y="100">start</text><text x="80" y="100">+5 min</text><text x="280" y="100">+6 h</text><text x="480" y="100">+12 h</text><text x="680" y="100">+18 h</text><text x="860" y="100">+24 h</text></g>
-  <g fill="var(--panel)" stroke="var(--server)" stroke-width="2"><circle cx="80" cy="70" r="9"/><circle cx="280" cy="70" r="9"/><circle cx="480" cy="70" r="9"/><circle cx="680" cy="70" r="9"/></g>
-  <circle cx="80" cy="70" r="9" fill="var(--server)"/>
-  <text x="80" y="44" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--server)">backup taken</text>
-  <g fill="var(--text-2)" font-size="12" text-anchor="middle"><text x="280" y="44">checked: not due</text><text x="480" y="44">not due</text><text x="680" y="44">not due</text></g>
-  <rect x="40" y="128" width="400" height="80" rx="8" fill="var(--server-soft)" stroke="var(--server)"/>
-  <g fill="currentColor" font-size="13"><text x="56" y="152" font-weight="600">A backup is due when:</text><text x="56" y="174">the newest backup is more than a day old,</text><text x="56" y="194">and the database is running.</text></g>
-  <rect x="470" y="128" width="390" height="80" rx="8" fill="var(--panel)" stroke="var(--line)"/>
-  <g fill="currentColor" font-size="13"><text x="486" y="152" font-weight="600">Then old ones are deleted:</text><text x="486" y="174">older than <tspan font-weight="600">Keep 30 days</tspan>, but</text><text x="486" y="194"><tspan font-weight="600">always keep 7</tspan> newest, whatever their age.</text></g>
-</svg>
-<figcaption>So there is about one backup a day while the server runs. A server left off overnight catches up 5 minutes after it starts. Closing Slate Server waits for a running backup to finish.</figcaption>
-</figure>
+<p>Slate Server backs the database up <b>every hour</b> by itself, while it runs (window open or in the tray) and the database is on. It looks every 10 minutes and takes a backup once the newest is an hour old. The backups go to the shared folder, in <code>Slate_Central\Slate_Server\Backups</code>, so they survive the server PC. Kept: the newest 24, plus the newest of each day for 14 days; older ones are deleted by themselves.</p>
+<p>If the shared folder cannot be reached, that hour's backup goes to the <code>Backups</code> folder beside the database on the server PC, the status bar and the log say so in red, and the next one tries the shared folder again. A server that keeps a <code>backup_dir</code> in <code>slate_server_config.json</code> uses that folder instead.</p>
+<div class="note warn"><b>Make Slate_Server admins-only</b>The backups hold everything in the database, including password hashes and HR records. On the file server, give <code>Slate_Central\Slate_Server</code> to IT and the server PC's account only, not to everyone who can open <code>Slate_Central</code>.</div>
 
 <div class="tablewrap keep"><table>
   <tr><th>Button</th><th>What it does</th></tr>
   <tr><td><b>Back up now</b></td><td>A full copy of the database, now. Do it before any upgrade, restore or password change.</td></tr>
-  <tr><td><b>Keep</b> 30 <b>days</b>, <b>always keep</b> 7</td><td>The tidy-up rule used after every automatic backup.</td></tr>
+  <tr><td><b>Keep</b> 30 <b>days</b>, <b>always keep</b> 7</td><td>A tidy-up rule for <b>Delete old backups</b> only. The hourly backups keep to their own rule (above).</td></tr>
   <tr><td><b>Delete old backups</b></td><td>Applies that rule now. It lists what it will delete and asks first. It cannot be undone.</td></tr>
   <tr><td><b>Restore from file&hellip;</b></td><td>Replaces <b>everything</b> in the live database with a <code>.dump</code> file. Close every workstation first. You must type <code>RESTORE</code>.</td></tr>
 </table></div>
-<p>Backups are files named like <code>slate_ut_vfx_20261006_141800.dump</code> in the <code>Backups</code> folder beside the database folder, on the server PC. <b>Once a week, copy the newest one off the server PC</b> (to the file server, or a drive kept elsewhere). A backup on the same disk does not survive the disk.</p>
+<p>Backups are files named like <code>slate_ut_vfx_20261006_141800.dump</code>. Make sure the file server itself is backed up: it now holds the studio's only off-PC copy.</p>
 
 <h3>Operations: maintenance, diagnostics, the log</h3>
 <div class="tablewrap keep"><table>
   <tr><th>Job (Every)</th><th>Runs</th><th>Button</th></tr>
   <tr><td>Vacuum and analyze (every 7 days)</td><td>By hand</td><td><b>Clean up the database (vacuum)</b>. Queries get slower without it.</td></tr>
   <tr><td>Rebuild indexes (every 30 days)</td><td>By hand</td><td><b>Rebuild indexes</b>. Also after a big ingest or a restore.</td></tr>
-  <tr><td>Backup (every day)</td><td>By itself</td><td><b>Back up now</b></td></tr>
+  <tr><td>Backup (every hour)</td><td>By itself, while Slate Server runs</td><td><b>Back up now</b></td></tr>
   <tr><td>Credit comp off (every day)</td><td>By itself: about 5 minutes after Slate Server opens, then daily</td><td><b>Credit comp off</b>. A second run the same day does nothing more. Runs only while Slate Server is open (window or tray).</td></tr>
 </table></div>
 <p>The <b>Last run</b> column says "1 day late", "5 days late" or "Never run". <b>Run diagnostics</b> checks the configuration, the database, the server, the pool and the update folder, and lists what is wrong in plain words. Run it first on any support call. <b>Server log</b>: <b>Open log</b> opens <code>pg_server.log</code>; <b>Trim log</b> keeps the last 2 MB. <b>Danger zone</b>: <b>Force kill the database&hellip;</b> only when the power switch does not respond. It stops every PostgreSQL on the PC at once.</p>
@@ -913,7 +901,8 @@ Every switch starts <strong>Off</strong>. A snapshot is taken before every chang
   <tr><th>What</th><th>Where</th><th>Safe to delete?</th></tr>
   <tr><td>The programs</td><td><code>%LOCALAPPDATA%\Programs\Slate Server</code>, <code>...\Slate Studio</code>, <code>...\Slate Operations</code></td><td>Uninstall instead. A reinstall brings them back.</td></tr>
   <tr><td><b>The database</b></td><td>Server PC: <code>%LOCALAPPDATA%\Slate_Central\LocalDatabase</code>, or the <b>Database folder</b> in Settings</td><td><b>No.</b> This is the studio's data.</td></tr>
-  <tr><td>Backups</td><td>Server PC: <code>Backups</code>, beside the database folder</td><td>Only old ones, with <b>Delete old backups</b>. Copy them away first.</td></tr>
+  <tr><td>Backups</td><td>Shared folder: <code>Slate_Central\Slate_Server\Backups</code> (admins only). When the share was down: <code>Backups</code> beside the database folder on the server PC</td><td>No. Slate deletes old ones itself.</td></tr>
+  <tr><td>Where the server is</td><td><code>Slate_Central\Slate_Server\server.json</code>: its address, ports and id, rewritten at every start</td><td>Yes. The server writes it again.</td></tr>
   <tr><td>Recovery folder</td><td>Server PC: <code>slate_recovery</code>, beside the database folder: the key's fingerprint, the passwords (<code>db_secrets.dat</code>), snapshots, <code>recovery.log</code></td><td><b>No.</b> Without it Recover Slate cannot unlock and the server loses its passwords.</td></tr>
   <tr><td>Server settings and logs</td><td><code>%LOCALAPPDATA%\Slate_Central\slate_server_config.json</code>; <code>pg_server.log</code> and <code>pgbouncer\</code> beside the database folder</td><td>Trim the log from Operations. The pool's files are rewritten at every start; do not edit them.</td></tr>
   <tr><td>Workstation settings</td><td><code>%LOCALAPPDATA%\Slate\config.json</code>; the database password in Credential Manager</td><td>Deleting them makes Slate ask <b>Set up Slate on this computer</b> again.</td></tr>
@@ -923,25 +912,19 @@ Every switch starts <strong>Off</strong>. A snapshot is taken before every chang
   <tr><td>Shared files</td><td>The shared <code>Slate_Central</code>: Updates, Commands, LiveStatus, Logs, Cache, Thumbnails, Config, Attendance, Lineups&hellip;</td><td>No. Every PC uses it.</td></tr>
 </table></div>
 
-<h3>Moving the server to another PC</h3>
+<h3>Replacing the server PC</h3>
 <ol class="steps">
-  <li><svg viewBox="0 0 44 44"><rect x="6" y="8" width="32" height="28" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="16" cy="22" r="4" fill="currentColor"/></svg><b>Old PC: Back up now</b><span>Copy the <code>.dump</code> away. Note the app password (<strong>Show app password</strong>).</span></li>
-  <li><svg viewBox="0 0 44 44"><rect x="6" y="14" width="32" height="16" rx="8" fill="var(--idle)"/><circle cx="14" cy="22" r="6" fill="var(--panel)"/></svg><b>Turn the power off</b><span>Then copy the whole folder that holds <code>LocalDatabase</code>, <code>Backups</code> and <code>slate_recovery</code>.</span></li>
-  <li><svg viewBox="0 0 44 44"><path d="M22 6 v20 M14 18 l8 8 l8 -8" fill="none" stroke="currentColor" stroke-width="3"/><line x1="8" y1="36" x2="36" y2="36" stroke="currentColor" stroke-width="3"/></svg><b>New PC: install, point</b><span>Install Slate Server. Turn on the power and choose <strong>Use an existing database folder...</strong>: the copied <code>LocalDatabase</code>.</span></li>
-  <li><svg viewBox="0 0 44 44"><circle cx="16" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 22 h16 M34 22 v6" fill="none" stroke="currentColor" stroke-width="3"/></svg><b>Give it the password</b><span>The new PC cannot read the old PC's encrypted passwords. Recover Slate, Unlock, type the noted password, <strong>Set app password (workstations)</strong>, <strong>Restart pool</strong>.</span></li>
+  <li><svg viewBox="0 0 44 44"><rect x="6" y="14" width="32" height="16" rx="8" fill="var(--idle)"/><circle cx="14" cy="22" r="6" fill="var(--panel)"/></svg><b>Old PC: stop it</b><span>If it still works: <strong>Back up now</strong>, then turn the power off, or take it off the network. Note the app password (<strong>Show app password</strong>).</span></li>
+  <li><svg viewBox="0 0 44 44"><path d="M22 6 v20 M14 18 l8 8 l8 -8" fill="none" stroke="currentColor" stroke-width="3"/><line x1="8" y1="36" x2="36" y2="36" stroke="currentColor" stroke-width="3"/></svg><b>New PC: install</b><span>Install Slate Server and give it the <strong>same</strong> shared folder.</span></li>
+  <li><svg viewBox="0 0 44 44"><rect x="6" y="8" width="32" height="28" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="16" cy="22" r="4" fill="currentColor"/></svg><b>Restore</b><span>Turn on the power. It finds no database here but finds the backups: press <strong>Restore the newest backup from the share (taken &hellip; ago)</strong>.</span></li>
+  <li><svg viewBox="0 0 44 44"><circle cx="16" cy="22" r="8" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 22 h16 M34 22 v6" fill="none" stroke="currentColor" stroke-width="3"/></svg><b>Give it the password</b><span>Print the new Recovery Key it shows. Then Recovery, Unlock, type the noted password, <strong>Set app password (workstations)</strong>, <strong>Restart pool</strong>.</span></li>
   <li><svg viewBox="0 0 44 44"><rect x="6" y="10" width="32" height="24" rx="2" fill="none" stroke="currentColor" stroke-width="3"/><line x1="6" y1="22" x2="38" y2="22" stroke="currentColor" stroke-width="2"/></svg><b>Allow Firewall</b><span>On the new PC. Then <strong>Check now</strong> in Recover Slate.</span></li>
-  <li><svg viewBox="0 0 44 44"><rect x="6" y="8" width="32" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><line x1="14" y1="38" x2="30" y2="38" stroke="currentColor" stroke-width="3"/></svg><b>Point the workstations</b><span>Give the new PC the old address, or use <strong>Reconfigure server / database</strong> on each workstation.</span></li>
+  <li><svg viewBox="0 0 44 44"><rect x="6" y="8" width="32" height="22" rx="3" fill="none" stroke="currentColor" stroke-width="3"/><line x1="14" y1="38" x2="30" y2="38" stroke="currentColor" stroke-width="3"/></svg><b>Workstations follow</b><span>Each one finds the new address in <code>server.json</code> on the shared folder at its next start, if it has signed in to this server before.</span></li>
 </ol>
-<p>Instead of copying the folder you can create a new empty database on the new PC and use <b>Restore from file&hellip;</b> with the dump. Workstations never follow a moved server by themselves: a PC keeps the server it was set up with, so another PC answering on the network cannot take its place.</p>
-<div class="note bad"><b>Never run two servers on the same data</b>Two servers mean two sets of changes nobody can merge. Old one off, then new one on. Keep the old PC's folder untouched until the new one has run for a week.</div>
+<p>A workstation follows <code>server.json</code> only when its saved address does not answer, the server named there accepts its password, and that server's id (kept in the database, so a restore keeps it) is the one it used before. Otherwise it asks first, and a person who is not sure answers <b>No</b> and uses <b>Reconfigure server / database</b>. Another PC answering on the network never takes the server's place. Data lost: at most the hour since the last backup.</p>
 
-<h3>Uninstalling</h3>
-<p>The uninstaller removes the program, then asks: <b>Delete its settings and data as well?</b> <b>No</b> is the default and keeps everything; a reinstall picks it up again.</p>
-<div class="tablewrap keep"><table>
-  <tr><th>Program</th><th>Yes deletes</th></tr>
-  <tr><td>Slate Server</td><td><b>THE STUDIO DATABASE</b> and everything around it: <code>%LOCALAPPDATA%\Slate_Central</code> with every backup, the recovery folder and the settings. If the database is kept elsewhere, it asks a second time. Answer Yes only to start the studio over.</td></tr>
-  <tr><td>Slate Studio / Slate Operations</td><td>On that PC only: <code>%LOCALAPPDATA%\Slate</code> (settings, cache, logs, the offline copy). The studio database is not touched. If the other workstation program is still installed, its settings file is kept.</td></tr>
-</table></div>
+<h3>A database kept on the shared folder</h3>
+<p>Older advice put the <b>Database folder</b> on the share. It still works after an upgrade, but the database can be damaged there and Recover Slate refuses to run. In Settings, press <b>Move the database to this PC&hellip;</b>: Slate backs up, stops the server, copies the database with <code>slate_recovery</code> and <code>pgbouncer</code> to <code>%LOCALAPPDATA%\Slate_Central\LocalDatabase</code>, checks the copy and starts from it. The old folder is not touched: delete it yourself after a week of clean running. If the server does not start from the copy, it goes back to the old folder. Typing a network path into Database folder asks first.</p>
 
 <!-- ============================================================ -->
 <h2 id="help">When something goes wrong</h2>
@@ -976,6 +959,6 @@ Every switch starts <strong>Off</strong>. A snapshot is taken before every chang
   <tr><td>Assign to: "Nobody holds the manage_it ability yet"</td><td>No role has <b>Work the IT desk</b></td><td>Tick it on the IT role in Roles &amp; Permissions.</td></tr>
 </table></div>
 
-<p style="margin-top:48px;color:var(--text-dim);font-size:14px">Slate BETA 2.2.0 &middot; Slate for IT &middot; Keep a printed copy with the Recovery Key, away from the server PC. Each part starts on a new page.</p>
+<p style="margin-top:48px;color:var(--text-dim);font-size:14px">Slate BETA 2.3.0 &middot; Slate for IT &middot; Keep a printed copy with the Recovery Key, away from the server PC. Each part starts on a new page.</p>
 
 </div>

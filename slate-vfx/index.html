@@ -430,40 +430,54 @@ footer a { color:var(--text-2); }
   </div>
 </section>
 
+<section id="new">
+  <div class="wrap narrow">
+    <p class="eyebrow">BETA 2.3.0</p>
+    <h2>What's new in BETA 2.3.0</h2>
+    <ul style="color:var(--text-2);font-size:15px;line-height:1.7;padding-left:20px">
+      <li><strong>Backups every hour, on the shared folder.</strong> A replacement server PC can restore the newest one with one button.</li>
+      <li><strong>Workstations find a moved server</strong>, and switch by themselves only when it is certainly the same server.</li>
+      <li><strong>Stock Browser crashes fixed</strong>, and Slate starts even when an old copy is stuck closing.</li>
+      <li><strong>Settings survive a power cut</strong>, logs stop growing for ever, and crashes reach the log.</li>
+      <li><strong>21 places where two screens disagreed</strong> now agree: ingest folders, Slap Comp verdicts, status words, leave counts.</li>
+      <li><strong>HR:</strong> a leave report with Export to Excel, a bell for withdrawals and revokes, and audited self-edits.</li>
+    </ul>
+  </div>
+</section>
+
 <section id="install">
   <div class="wrap narrow">
     <p class="eyebrow">Getting it running</p>
-    <h2>Clone it. Double-click <code>setup.bat</code>.</h2>
+    <h2>Three installers. Server first.</h2>
     <p>
-      That is the whole install. Nothing goes into the registry or onto <code>PATH</code>,
-      no Python already on the machine is touched, and deleting the folder removes it.
+      Everything is inside the installers: no Python, no internet connection, nothing else to download.
+      After the first install, workstations update themselves from the studio's shared folder.
     </p>
 
     <ol class="steps">
       <li>
-        <h3>setup.bat</h3>
-        <p>Downloads a portable Python, FFmpeg and the rest, and installs the dependencies. Running it twice is safe — anything already in place is skipped, and an interrupted download resumes rather than leaving a half file behind.</p>
+        <h3>setup_Slate Server_vBETA 2.3.0.exe</h3>
+        <p>On the one always-on machine that holds the studio database: Slate Server, PostgreSQL 17, PgBouncer and Recover Slate. Write down the Recovery Key it shows once.</p>
       </li>
       <li>
-        <h3>Answer four questions</h3>
-        <p>Where the studio database is, and the password. Written to a local file that git never sees. Leave the password blank and Slate runs on a local SQLite database instead — everything works, nothing is shared.</p>
+        <h3>setup_Slate_Ops_vBETA 2.3.0.exe</h3>
+        <p>On every workstation: Attendance, Leave, IT Support and the office screens.</p>
       </li>
       <li>
-        <h3>Slate.bat</h3>
-        <p>Setup writes three launchers: the client, the operations shell, and Central Server.</p>
+        <h3>setup_Slate_Studio_vBETA 2.3.0.exe</h3>
+        <p>On artist, lead, coordinator and supervisor workstations, next to Ops: the production screens, ffmpeg and OpenRV.</p>
       </li>
     </ol>
 
-<pre><b>setup.bat</b>              install what is missing
-<b>setup.bat /check</b>       say what it would do, download nothing
-<b>setup.bat /server</b>      also install PostgreSQL (server machine only)
-<b>setup.bat /force</b>       re-download even what is already there</pre>
+    <p>
+      <a class="btn primary" href="https://github.com/capsuleutkarsh-design/Slate/releases/latest">Download BETA 2.3.0</a>
+      <a class="btn" href="guide/slate-it-handbook.html">Read the IT guide</a>
+    </p>
 
     <div class="note">
       <p>
-        <strong>No passwords in this repository.</strong> It is public, so the shipped
-        config carries settings only — the real values are written by setup into a
-        git-ignored local file and never leave the machine.
+        <strong>No passwords in the installers.</strong> Slate Server makes the studio's own
+        database password at first setup and keeps it on the server PC.
       </p>
     </div>
   </div>
@@ -475,7 +489,7 @@ footer a { color:var(--text-2); }
     <span>Slate · © 2026 Utkarsh Tripathi · UT Community Licence 2.0</span>
     <a href="https://github.com/capsuleutkarsh-design/Slate">GitHub</a>
     <a href="guide/slate-studio-handbook.html">Studio guide</a>
-    <span style="margin-left:auto">FFmpeg, PostgreSQL and OpenRV are fetched at install time and keep their own licences.</span>
+    <span style="margin-left:auto">FFmpeg, PostgreSQL and OpenRV are bundled in the installers and keep their own licences.</span>
   </div>
 </footer>
 

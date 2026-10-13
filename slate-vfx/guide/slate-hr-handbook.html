@@ -121,7 +121,7 @@
 
 <div class="wrap">
 
-<div class="eyebrow">Slate BETA 2.2.0 &middot; for HR</div>
+<div class="eyebrow">Slate BETA 2.3.0 &middot; for HR</div>
 <h1 style="margin-top:8px">Slate for HR</h1>
 <p class="lede">Everything HR does in Slate Operations: leave, balances, comp off, attendance, holidays, the year end, joining and leaving, and people records. One action per step.</p>
 
@@ -134,7 +134,7 @@
   <a class="cover ops" href="#queue">
     <svg viewBox="0 0 56 56" role="img" aria-label="A list with a tick"><line x1="8" y1="14" x2="34" y2="14" stroke="currentColor" stroke-width="3"/><line x1="8" y1="26" x2="34" y2="26" stroke="currentColor" stroke-width="3"/><line x1="8" y1="38" x2="26" y2="38" stroke="currentColor" stroke-width="3"/><path d="M34 38 L40 44 L50 30" fill="none" stroke="currentColor" stroke-width="4"/></svg>
     <h3>The leave queue</h3>
-    <div class="who">Approve, reject, withdrawals, revoke. Supervisor first, you last.</div>
+    <div class="who">Approve, reject, withdrawals, revoke, the leave report. Supervisor first, you last.</div>
   </a>
   <a class="cover ops" href="#cost">
     <svg viewBox="0 0 56 56" role="img" aria-label="A calendar"><rect x="8" y="12" width="40" height="36" rx="4" fill="none" stroke="currentColor" stroke-width="3"/><line x1="8" y1="22" x2="48" y2="22" stroke="currentColor" stroke-width="3"/><rect x="16" y="28" width="8" height="8" fill="currentColor"/><rect x="26" y="28" width="8" height="8" fill="currentColor"/><rect x="36" y="28" width="8" height="8" fill="currentColor"/></svg>
@@ -361,7 +361,7 @@
 </ol>
 
 <h3>Reject, withdrawals, revoke</h3>
-<p>Every Approve and Reject rings the bell of the person who asked; a rejection carries your reason. When a supervisor approves, every active HR approver gets a bell: "... is waiting for HR." <strong>Withdrawal decisions and Revoke send no bell</strong>: tell the person yourself.</p>
+<p>Every Approve and Reject rings the bell of the person who asked; a rejection carries your reason. When a supervisor approves, every active HR approver gets a bell: "... is waiting for HR." Agreeing to or refusing a withdrawal, and <strong>Revoke</strong>, ring their bell too, with your reason.</p>
 <div class="tablewrap"><table>
   <tr><th>You want to</th><th>Do this</th><th>What happens</th></tr>
   <tr><td>Say no</td><td>Select, press <b>Reject</b>, type the reason, press <b>Reject</b>.</td><td>A reason is required. The person sees it under <b>Decision</b>.</td></tr>
@@ -383,6 +383,15 @@
 </table></div>
 <p>Point at the <b>Status</b> of a row to see why it went where it went (for example "No supervisor recorded, so it went straight to HR.") and both approvers' notes.</p>
 <div class="note"><b>"Already decided or withdrawn - the list has been refreshed."</b>Somebody else acted on the request while you were looking at it, or the person withdrew it. Nothing was changed. Read the refreshed list and decide again if it is still yours.</div>
+
+<h3>The leave report</h3>
+<p><b>HR tools &rarr; Leave report...</b> lists approved leave per person, month and type, with each person's <b>Balance now</b> (the paid leave they have left today). It opens on this year for everybody.</p>
+<ul>
+  <li>Filter by person, department, the From and to dates, and the leave type.</li>
+  <li>Only approved leave counts, as the days each request was charged for. Leave across a month end is split between the two months.</li>
+  <li>Somebody with no leave in the dates shows one row of 0, so their balance is still there. Picking a type leaves them out.</li>
+  <li><b>Export to Excel</b> saves the rows shown as an Excel workbook, with the days and balances as numbers.</li>
+</ul>
 </section>
 
 <!-- ============================================================ -->
@@ -663,6 +672,7 @@
   <li>A day closed by the automatic punch-out says so: "Out was set by the automatic punch-out at 19:30 - enter the real time if it is known."</li>
   <li><b>Clear day</b> removes the day's record. It also needs a reason, kept in the audit log.</li>
   <li>A day of approved leave asks before adding punches.</li>
+  <li><b>Your own day</b> can be corrected or cleared the same way. Nothing stops it, but each one is written to the audit trail as <b>Attendance self-edit</b>, with the old and new times and your reason. Admin see it in <b>Admin Panel &rarr; Audit Logs &rarr; Audit trail</b>.</li>
 </ul>
 <p>Supervisors see <b>My team</b>: the people under them, read-only. When they spot a wrong day, they ask you to correct it.</p>
 
@@ -991,5 +1001,5 @@
   <tr><td>A screen says <b>Could not load</b></td><td>That screen could not read from the database</td><td>Press <b>Try again</b> (or F5). Still failing: <b>Copy details for IT</b> and raise it in <b>IT Support</b>.</td></tr>
 </table></div>
 
-<p style="margin-top:24px;color:var(--text-dim);font-size:14px">Slate BETA 2.2.0 &middot; Slate for HR &middot; The defaults named here can be changed in Settings &rarr; Studio policy. This page can be printed. Each part starts on a new page.</p>
+<p style="margin-top:24px;color:var(--text-dim);font-size:14px">Slate BETA 2.3.0 &middot; Slate for HR &middot; The defaults named here can be changed in Settings &rarr; Studio policy. This page can be printed. Each part starts on a new page.</p>
 </div>

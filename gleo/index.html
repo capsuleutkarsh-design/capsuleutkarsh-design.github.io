@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gleo — free lossless music player for Windows and Android</title>
+<meta name="description" content="Gleo is a free, fast music player for lossless libraries on Windows and Android: gapless and bit-perfect playback, EQ with AutoEQ headphone correction, CUE sheets, smart playlists and a spinning CD. No AI, no accounts, nothing sent unless you switch it on.">
+<meta name="author" content="Utkarsh Tripathi">
+<meta name="theme-color" content="#0D0F14">
+<meta name="color-scheme" content="dark light">
+<link rel="canonical" href="https://capsuleutkarsh-design.github.io/gleo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Gleo">
+<meta property="og:title" content="Gleo — free lossless music player for Windows and Android">
+<meta property="og:description" content="Gapless, bit-perfect, EQ, CUE sheets and a spinning CD. No AI, no accounts. Free.">
+<meta property="og:url" content="https://capsuleutkarsh-design.github.io/gleo/">
+<meta property="og:image" content="https://capsuleutkarsh-design.github.io/gleo/assets/og.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Gleo: a beautiful, fast player for your lossless music">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Gleo — free lossless music player for Windows and Android">
+<meta name="twitter:description" content="Gapless, bit-perfect, EQ, CUE sheets and a spinning CD. No AI, no accounts. Free.">
+<meta name="twitter:image" content="https://capsuleutkarsh-design.github.io/gleo/assets/og.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="assets/gleo.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Gleo",
+  "alternateName": "Lumen",
+  "description": "A free, fast music player for lossless libraries. Gapless, bit-perfect, EQ, CUE sheets. No AI, no accounts.",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Windows 10, Windows 11, Android 8.0+",
+  "softwareVersion": "0.4.0-beta",
+  "url": "https://capsuleutkarsh-design.github.io/gleo/",
+  "downloadUrl": "https://github.com/capsuleutkarsh-design/gleo/releases/latest",
+  "image": "https://capsuleutkarsh-design.github.io/gleo/assets/og.png",
+  "screenshot": "https://capsuleutkarsh-design.github.io/gleo/assets/screens/win-now-playing.webp",
+  "license": "https://github.com/capsuleutkarsh-design/gleo/blob/main/LICENSE.md",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+  "author": {"@type": "Person", "name": "Utkarsh Tripathi", "url": "https://capsuleutkarsh-design.github.io/"}
+}
+</script>
+<style>
+  /* Colours from the app: midnight layers and the gold accent. */
+  :root {
+    --bg: #0D0F14; --raised: #151922; --raised2: #1C212C; --border: #2A303C;
+    --text: #EEF0F4; --body: #C9CDD6; --dim: #8D94A3;
+    --gold: #E8B04B; --gold-text: #E8B04B; --on-gold: #17130A; --gold-wash: rgba(232,176,75,.10);
+    --shadow: 0 30px 80px rgba(0,0,0,.55);
+    --font: Inter, "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+    --mono: "Cascadia Code", Consolas, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #F6F4EF; --raised: #FFFFFF; --raised2: #F0ECE3; --border: #E2DCCF;
+      --text: #15171C; --body: #3A3F4A; --dim: #666C78;
+      --gold-text: #8C5C00; --gold-wash: rgba(140,92,0,.08);
+      --shadow: 0 24px 60px rgba(40,30,10,.18);
+    }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { margin: 0; background: var(--bg); color: var(--body); font: 16px/1.6 var(--font);
+         -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: var(--gold-text); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  img { max-width: 100%; height: auto; display: block; }
+  code { font-family: var(--mono); font-size: .86em; color: var(--text); background: var(--raised2);
+         padding: 1px 6px; border-radius: 5px; overflow-wrap: anywhere; }
+  h1, h2, h3 { color: var(--text); letter-spacing: -.01em; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 16px; }
+
+  /* top bar */
+  nav { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--bg) 85%, transparent);
+        backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  nav .wrap { display: flex; align-items: center; gap: 10px; height: 60px; }
+  nav .brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 600; }
+  nav .brand:hover { text-decoration: none; }
+  nav .links { margin-left: auto; display: flex; align-items: center; gap: 22px; font-size: 14px; }
+  nav .links a { color: var(--dim); }
+  nav .links a:hover { color: var(--text); text-decoration: none; }
+  nav .links a.btn { color: var(--on-gold); }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 12px;
+         font-weight: 600; font-size: 15px; border: 1px solid var(--border); color: var(--text);
+         background: var(--raised); line-height: 1.2; }
+  .btn:hover { border-color: var(--gold); text-decoration: none; }
+  .btn.gold { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+  .btn.gold:hover { filter: brightness(1.07); }
+  .btn small { font-weight: 500; opacity: .75; }
+  nav .btn { padding: 7px 14px; font-size: 14px; border-radius: 10px; }
+
+  /* hero */
+  header { padding: 72px 0 64px;
+           background: radial-gradient(900px 480px at 20% 0%, var(--gold-wash), transparent 65%); }
+  .hero { display: grid; grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; }
+  .hero h1 { margin: 0 0 18px; line-height: 0; }
+  .hero h1 img { width: 210px; height: auto; }
+  .pitch { font-size: clamp(22px, 3vw, 28px); line-height: 1.3; color: var(--text); font-weight: 600; margin: 0 0 14px; }
+  .lead { font-size: 17px; color: var(--dim); margin: 0 0 28px; max-width: 520px; }
+  .buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+  .meta { margin: 18px 0 0; font-size: 14px; color: var(--dim); }
+  .name { margin: 22px 0 0; font-size: 14px; color: var(--dim); border-left: 2px solid var(--gold); padding-left: 12px; }
+  .name i { color: var(--text); }
+  .stage { position: relative; padding: 0 0 40px 0; }
+  .stage .win { border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  .stage .phone { position: absolute; right: -8px; bottom: 0; width: 26%; border-radius: 18px;
+                  border: 4px solid #000; box-shadow: var(--shadow); }
+
+  /* sections */
+  section { padding: 72px 0; }
+  .eyebrow { color: var(--gold-text); font-weight: 700; letter-spacing: .12em; font-size: 13px; text-transform: uppercase; }
+  h2 { font-size: clamp(26px, 4vw, 34px); margin: 6px 0 10px; line-height: 1.2; }
+  .sub { color: var(--dim); margin: 0 0 32px; max-width: 640px; }
+  figure { margin: 0; }
+  figcaption { font-size: 14px; color: var(--dim); margin-top: 10px; }
+  .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .shots .wide { grid-column: 1 / -1; }
+  .shots img { border-radius: 10px; border: 1px solid var(--border); }
+  .phones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px;
+            max-width: 840px; margin-left: auto; margin-right: auto; }
+  .phones img { border-radius: 18px; border: 4px solid #000; aspect-ratio: 540 / 1077; object-fit: cover; object-position: top; }
+
+  .features { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .feat { background: var(--raised); border: 1px solid var(--border); border-radius: 18px; padding: 24px; }
+  .feat h3 { margin: 0 0 12px; font-size: 20px; display: flex; align-items: center; gap: 10px; }
+  .feat h3 span { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); flex: none; }
+  .feat ul { margin: 0; padding-left: 18px; }
+  .feat li { margin: 0 0 8px; }
+  .feat li b { color: var(--text); font-weight: 600; }
+  .formats { margin-top: 20px; color: var(--dim); font-size: 15px; }
+
+  .note { background: var(--raised); border: 1px solid var(--border); border-left: 3px solid var(--gold);
+          border-radius: 14px; padding: 22px 24px; }
+  .note h2 { font-size: 24px; margin-top: 0; }
+  .note p { margin: 0 0 10px; }
+  .note p:last-child { margin: 0; }
+  .note b { color: var(--text); }
+
+  details { background: var(--raised); border: 1px solid var(--border); border-radius: 14px; margin-bottom: 12px; }
+  summary { cursor: pointer; padding: 16px 20px; color: var(--text); font-weight: 600; list-style: none;
+            display: flex; justify-content: space-between; gap: 16px; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: "+"; color: var(--gold-text); font-weight: 700; }
+  details[open] summary::after { content: "–"; }
+  details .a { padding: 0 20px 16px; }
+  details .a p { margin: 0 0 10px; }
+  details .a ul { margin: 0 0 10px; padding-left: 20px; }
+
+  footer { border-top: 1px solid var(--border); padding: 28px 0 36px; font-size: 14px; color: var(--dim); }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  footer .who { display: flex; align-items: center; gap: 10px; }
+  footer .links { display: flex; gap: 6px 16px; flex-wrap: wrap; }
+
+  @media (max-width: 860px) {
+    header { padding: 40px 0 44px; }
+    .hero { grid-template-columns: 1fr; gap: 36px; }
+    .hero h1 img { width: 160px; }
+    .stage .phone { right: 0; width: 28%; border-width: 3px; border-radius: 12px; }
+    section { padding: 52px 0; }
+    .shots, .features { grid-template-columns: 1fr; }
+    .phones { gap: 10px; }
+    .phones img { border-width: 2px; border-radius: 10px; }
+    nav .links a:not(.btn) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="assets/gleo.svg" alt="" width="30" height="30">Gleo</a>
+    <div class="links">
+      <a href="#screens">Screens</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/capsuleutkarsh-design/gleo">GitHub</a>
+      <a class="btn gold" href="#download">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap hero">
+    <div id="download">
+      <h1><picture>
+        <source srcset="assets/gleo_wordmark_light.svg" media="(prefers-color-scheme: light)">
+        <img src="assets/gleo_wordmark.svg" alt="Gleo" width="210" height="112">
+      </picture></h1>
+      <p class="pitch">A free lossless music player for Windows and Android.</p>
+      <p class="lead">Gapless, bit-perfect playback, exact seeking in every format, a proper EQ and a spinning CD.
+        No AI, no accounts. Just your music.</p>
+      <div class="buttons">
+        <a class="btn gold" href="https://github.com/capsuleutkarsh-design/gleo/releases/download/v0.4.0-beta/Gleo-Setup-0.4.0-beta.exe">Windows <small>setup · 37 MB</small></a>
+        <a class="btn gold" href="https://github.com/capsuleutkarsh-design/gleo/releases/download/v0.4.0-beta/Gleo-0.4.0-beta-android-arm64-v8a.apk">Android <small>APK · 55 MB</small></a>
+        <a class="btn" href="https://github.com/capsuleutkarsh-design/gleo/releases/latest">All downloads</a>
+      </div>
+      <p class="meta">0.4.0 beta · Windows 10 and 11 (64-bit) · Android 8 or newer ·
+        portable .zip and other APKs under <a href="https://github.com/capsuleutkarsh-design/gleo/releases/latest">All downloads</a> (<a href="#apk">which APK?</a>)</p>
+      <p class="name"><i>Gleo</i> (say GLAY-oh) is Old English <i>glēo</i>: music, joy.</p>
+    </div>
+    <div class="stage">
+      <img class="win" src="assets/screens/win-now-playing.webp" width="1344" height="851"
+           alt="Gleo on Windows: Now Playing with the CD sliding out from behind the cover">
+      <img class="phone" src="assets/screens/phone-now-playing.webp" width="540" height="1140"
+           alt="Gleo on Android: Now Playing with star ratings">
+    </div>
+  </div>
+</header>
+
+<section id="screens">
+  <div class="wrap">
+    <div class="eyebrow">Screens</div>
+    <h2>One look on the desktop and the phone</h2>
+    <p class="sub">Midnight layers, a gold accent, and the cover art in front. There is a light theme too.</p>
+    <div class="shots">
+      <figure class="wide">
+        <img src="assets/screens/win-home.webp" width="1344" height="821" loading="lazy"
+             alt="Gleo home on Windows with Jump back in and suggestions">
+        <figcaption><b>Home.</b> Suggestions from your own listening, each telling you why.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/screens/win-songs.webp" width="1344" height="851" loading="lazy"
+             alt="Songs list with format badges, CUE tracks and star ratings">
+        <figcaption><b>Songs</b> with format badges, CUE tracks and star ratings.</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/screens/win-sound.webp" width="1344" height="821" loading="lazy"
+             alt="The Sound page with the signal path, output device and upsampling">
+        <figcaption><b>Sound.</b> The signal path shows exactly what happens to your music.</figcaption>
+      </figure>
+    </div>
+    <div class="phones">
+      <figure>
+        <img src="assets/screens/phone-home.webp" width="540" height="1077" loading="lazy" alt="Gleo home on Android">
+        <figcaption>Home</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/screens/phone-library.webp" width="540" height="1077" loading="lazy" alt="Gleo Library tab on Android">
+        <figcaption>Library</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/screens/phone-lock.webp" width="540" height="1140" loading="lazy" alt="Gleo lock-screen disc view on Android">
+        <figcaption>Lock-screen disc view</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section id="features" style="padding-top: 0">
+  <div class="wrap">
+    <div class="eyebrow">Features</div>
+    <h2>Built for big lossless libraries</h2>
+    <p class="sub">Gleo started from the look of <a href="https://github.com/playwora/wora">Wora</a> and fixed what kept
+      getting in the way: real seeking, a real queue, no gaps, and a library that stays fast.</p>
+    <div class="features">
+      <div class="feat">
+        <h3><span></span>Sound</h3>
+        <ul>
+          <li><b>Gapless</b> playback and <b>exact seeking</b> in every format, even high-res FLAC with no seek table.</li>
+          <li><b>Bit-perfect</b> output with WASAPI exclusive mode on Windows, and a verified badge in the signal path.</li>
+          <li>A 10-band graphic <b>EQ</b> and an advanced parametric EQ with presets; EQ per output device.</li>
+          <li>Headphone correction from <b>AutoEQ</b> or Equalizer APO files, plus <b>crossfeed</b>.</li>
+          <li>Upsampling with <b>soxr</b>, <b>ReplayGain</b>, and <i>Best quality on this device</i>.</li>
+          <li>Optional <b>crossfade</b> (never inside a gapless album) and trim silence.</li>
+        </ul>
+      </div>
+      <div class="feat">
+        <h3><span></span>Library</h3>
+        <ul>
+          <li>Fast background scanning of several folders; albums, multi-disc sets and Various Artists grouped right.</li>
+          <li><b>CUE sheets:</b> one big file plus its <code>.cue</code> shows as separate songs.</li>
+          <li><b>Smart playlists</b>, <b>star ratings</b>, Browse by genre, year and composer, and Statistics.</li>
+          <li>A <b>duplicate finder</b> that only hides copies; it never deletes files.</li>
+          <li><b>Back up &amp; restore</b> in one <code>.gleobackup</code> file, even between Windows and Android.</li>
+          <li><b>Lyrics:</b> synced <code>.lrc</code> files or tags, and optional downloads from LRCLIB.</li>
+        </ul>
+      </div>
+      <div class="feat">
+        <h3><span></span>Looks</h3>
+        <ul>
+          <li>A <b>CD or vinyl</b> slides out from behind the cover and spins while the music plays.</li>
+          <li><b>Disc mode</b> and an always-on-top <b>mini player</b> on Windows.</li>
+          <li><b>Cover art packs</b> for albums with no good cover: public-domain paintings, storybook illustrations, or painted styles.</li>
+          <li>Android: a <b>lock-screen disc view</b> and a home-screen <b>widget</b>.</li>
+          <li>Windows: <b>taskbar buttons</b>, media keys, the media overlay and a tray icon.</li>
+          <li>Dark and light themes; the accent follows the album art.</li>
+        </ul>
+      </div>
+      <div class="feat">
+        <h3><span></span>Privacy</h3>
+        <ul>
+          <li><b>No AI.</b> Suggestions come only from what you play in Gleo.</li>
+          <li><b>No account</b> and no sign-in.</li>
+          <li><b>Nothing is sent</b> unless you switch it on: the update check and LRCLIB lyrics are both off by default.</li>
+          <li>Your music files are only read, <b>never changed</b>. Cover picks live in Gleo, not in your files.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="formats">Plays FLAC (any resolution), ALAC, WAV, AIFF, WavPack, APE, DSD, MP3, AAC, OGG and Opus.
+      <a href="https://github.com/capsuleutkarsh-design/gleo/blob/main/docs/releases/v0.4.0.md">What's new in 0.4.0</a></p>
+  </div>
+</section>
+
+<section style="padding-top: 0">
+  <div class="wrap">
+    <div class="note">
+      <h2>Coming from Lumen?</h2>
+      <p>Gleo is Lumen's new name, from 0.4.0.</p>
+      <p><b>Windows:</b> Gleo installs beside Lumen. On its first start it copies your Lumen library, playlists, play
+        counts, settings and cover picks. Lumen's folder is kept; once Gleo looks right, uninstall Lumen yourself.</p>
+      <p><b>Android:</b> Gleo is a new app, so it can't update the Lumen test app. Uninstall Lumen first, then install
+        Gleo. The phone starts fresh (the Lumen test app had no backup); from now on use
+        <i>Settings → Data and updates → Back up</i>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="padding-top: 0">
+  <div class="wrap">
+    <div class="eyebrow">FAQ</div>
+    <h2>Questions</h2>
+    <p class="sub">Something else? <a href="https://github.com/capsuleutkarsh-design/gleo/issues">Open an issue</a>
+      or write to <a href="mailto:capsuleutkarsh@gmail.com">capsuleutkarsh@gmail.com</a>.</p>
+
+    <details id="apk">
+      <summary>Which Android APK do I need?</summary>
+      <div class="a">
+        <ul>
+          <li><b>arm64-v8a</b>: almost every phone from the last several years. Start with this one.</li>
+          <li><b>armeabi-v7a</b>: older 32-bit phones. Use it if Android says the arm64 APK isn't compatible.</li>
+          <li><b>x86_64</b>: emulators and other x86 devices.</li>
+        </ul>
+        <p>Gleo needs Android 8 or newer. All three are under <a href="https://github.com/capsuleutkarsh-design/gleo/releases/latest">All downloads</a>, with <code>SHA256SUMS-android.txt</code> to check them.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Android or Play Protect warns me about the APK</summary>
+      <div class="a">
+        <p>Gleo isn't on the Play Store yet, and this beta is signed with a temporary test key, so Android asks before
+          installing it and Play Protect may offer to scan it or call it unknown. Allow installs from your browser or
+          file manager, and if Play Protect stops you, open <i>More details</i> and choose to install anyway (the
+          wording differs between phones).</p>
+        <p>When Gleo moves to its permanent key, you will uninstall once and reinstall. Back up first with
+          <i>Settings → Data and updates → Back up</i>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Windows says "Windows protected your PC"</summary>
+      <div class="a">
+        <p>That is SmartScreen. The installer isn't signed with a paid code-signing certificate, so new downloads get
+          this warning. Click <i>More info</i>, then <i>Run anyway</i>. You can check the file against
+          <code>SHA256SUMS.txt</code> in the release. Prefer no installer? Use the portable <code>.zip</code>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Where does Gleo keep my data?</summary>
+      <div class="a">
+        <ul>
+          <li><b>Windows:</b> <code>%APPDATA%\Utkarsh Tripathi\Gleo\</code> holds the library list, playlists,
+            favourites, play counts, sound settings and the log. <i>Settings → Data and updates</i> opens it.
+            Cover thumbnails are in <code>%LOCALAPPDATA%</code> and are safe to delete.</li>
+          <li><b>Portable:</b> a <code>userdata</code> folder next to <code>gleo.exe</code>.</li>
+          <li><b>Android:</b> inside Gleo's own app storage. Uninstalling removes it, so make a backup first.</li>
+        </ul>
+        <p>Uninstalling on Windows asks whether to delete your data; the answer is <i>keep</i> unless you choose otherwise.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Will Gleo change my music files?</summary>
+      <div class="a"><p>No. Gleo only reads your files. Ratings, cover picks and play counts are kept in Gleo's own data.</p></div>
+    </details>
+
+    <details>
+      <summary>Is it really free?</summary>
+      <div class="a"><p>Yes. Gleo is free to use and share under the
+        <a href="https://github.com/capsuleutkarsh-design/gleo/blob/main/LICENSE.md">UT Community Licence 2.0</a>.
+        It is not for sale; if you change it, keep the credits and send your changes back.</p></div>
+    </details>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="who"><img src="assets/gleo.svg" alt="" width="22" height="22"><span>Gleo · © 2026 Utkarsh Tripathi · UT Community Licence 2.0</span></div>
+    <div class="links">
+      <a href="https://github.com/capsuleutkarsh-design/gleo">GitHub</a>
+      <a href="https://github.com/capsuleutkarsh-design/gleo/releases">Releases</a>
+      <a href="https://github.com/capsuleutkarsh-design/gleo/blob/main/LICENSE.md">Licence</a>
+      <a href="https://github.com/capsuleutkarsh-design/gleo/issues">Report a problem</a>
+      <a href="../">More tools by Utkarsh</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

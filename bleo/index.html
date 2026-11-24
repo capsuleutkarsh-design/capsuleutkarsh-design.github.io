@@ -33,7 +33,7 @@
   "description": "A free, powerful video player for Android. Every format, HDR, subtitles, series in the right order. No ads, no account.",
   "applicationCategory": "MultimediaApplication",
   "operatingSystem": "Android 8.0+",
-  "softwareVersion": "0.6.1",
+  "softwareVersion": "0.7.0",
   "url": "https://capsuleutkarsh-design.github.io/bleo/",
   "downloadUrl": "https://github.com/capsuleutkarsh-design/bleo/releases/latest",
   "image": "https://capsuleutkarsh-design.github.io/bleo/assets/og.png",
@@ -174,10 +174,10 @@
       <p class="lead">Every format, HDR and every subtitle. Your series in the right order, one-tap Enhance and a
         picture while you seek. No ads, no account.</p>
       <div class="buttons">
-        <a class="btn teal" href="https://github.com/capsuleutkarsh-design/bleo/releases/download/v0.6.1/Bleo-0.6.1-android-arm64.apk">Android <small>APK · 45 MB</small></a>
+        <a class="btn teal" href="https://github.com/capsuleutkarsh-design/bleo/releases/download/v0.7.0/Bleo-0.7.0-android-arm64.apk">Android <small>APK · 45 MB</small></a>
         <a class="btn" href="https://github.com/capsuleutkarsh-design/bleo/releases/latest">All downloads</a>
       </div>
-      <p class="meta">0.6.1 beta · Android 8 or newer · older 32-bit phones: the armv7 APK under
+      <p class="meta">0.7.0 beta · Android 8 or newer · older 32-bit phones: the armv7 APK under
         <a href="https://github.com/capsuleutkarsh-design/bleo/releases/latest">All downloads</a> (<a href="#apk">which APK?</a>)</p>
       <p class="name"><i>Bleo</i> (say BLAY-oh) is Old English <i>blēo</i>: colour, the look of things.
         It's the sister of <a href="../gleo/">Gleo</a>, the music player.</p>
@@ -272,12 +272,12 @@
           <li><b>No ads</b>, no account, no tracking.</li>
           <li>Nothing leaves your phone, except a subtitle search you start yourself
             (<a href="privacy.html">privacy policy</a>).</li>
-          <li>A <b>Private folder</b> behind a PIN or your fingerprint.</li>
+          <li>A <b>Private folder</b> behind a PIN or your fingerprint, hidden from every other app.</li>
           <li>Videos are only changed when you rename, move or delete them, and Android asks you first.</li>
         </ul>
       </div>
     </div>
-    <p class="formats"><a href="https://github.com/capsuleutkarsh-design/bleo/releases/tag/v0.6.1">What's new in 0.6.1</a></p>
+    <p class="formats"><a href="https://github.com/capsuleutkarsh-design/bleo/releases/tag/v0.7.0">What's new in 0.7.0</a></p>
   </div>
 </section>
 
@@ -320,10 +320,13 @@
     <details>
       <summary>How private is the Private folder?</summary>
       <div class="a">
-        <p>Videos in it disappear from every list in Bleo and only show after your PIN or fingerprint. The files stay
-          where they are, so a gallery or file manager can still see them. Forgot the PIN? Your fingerprint lets you
-          choose a new one; without it you can reset the folder, which puts the videos back in your library (nothing
-          is deleted).</p>
+        <p>Bleo moves private videos into a hidden folder, <code>.bleo_Private</code>, and renames them
+          <code>Movie.mp4.bleo</code>. No gallery, Google Photos, other player or file manager shows them, and they open
+          in Bleo only after your PIN or fingerprint. Moving is instant, even for huge files.</p>
+        <p>Uninstalling Bleo doesn't touch them: after reinstalling, open Private and tap <i>Find hidden videos</i>.
+          <i>Remove from Private</i> puts each video back in its own folder. Android asks once for "All files access" so
+          Bleo can move them.</p>
+        <p>It hides files; it doesn't encrypt them. And a video Google Photos already backed up stays in the cloud.</p>
       </div>
     </details>
 

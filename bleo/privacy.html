@@ -50,6 +50,8 @@
     <li>your Private folder PIN, stored only as a salted SHA-256 hash, never as the PIN itself;</li>
     <li>thumbnails Bleo made, and subtitles you downloaded.</li>
   </ul>
+  <p>Videos you make private are moved into a hidden <code>.bleo_Private</code> folder on your own storage, with a
+    small index of where each came from. That folder stays on your phone, even if you uninstall Bleo.</p>
   <p>None of this is sent anywhere. Bleo has no servers.</p>
 
   <h2>The one thing that goes online: subtitle search</h2>
@@ -73,6 +75,8 @@
     <tr><td>Internet</td><td>Only for <i>Find subtitles online</i>.</td></tr>
     <tr><td>Fingerprint / face (biometric)</td><td>To open the Private folder, if you allow it. Android checks the
       fingerprint; Bleo only learns yes or no.</td></tr>
+    <tr><td>All files access (Android 11+, optional)</td><td>Only to move videos you make private into the hidden
+      <code>.bleo_Private</code> folder and back. Asked for the first time you use it; Bleo reads nothing else with it.</td></tr>
     <tr><td>Keep awake</td><td>So the screen doesn't turn off while a video plays.</td></tr>
     <tr><td>Storage (Android 10 and older only)</td><td>To rename, move or delete videos when you ask, and to save
       screenshots to your gallery.</td></tr>
